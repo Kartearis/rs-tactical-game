@@ -1,0 +1,36 @@
+
+
+.game {
+    display: none;
+    width: 854px;
+    height: 480px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 20px;
+}
+
+.game.active {
+    display: block;
+}
+
+.simple-menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    font-size: 40px;
+    height: 100%;
+    width: 100%;
+}
+
+.simple-menu__item {
+    transition: 0.3s;
+}
+
+.simple-menu__item:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    text-shadow: 0 0 5px goldenrod;
+}
