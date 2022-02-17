@@ -34,3 +34,54 @@
     transform: scale(1.1);
     text-shadow: 0 0 5px goldenrod;
 }
+
+.battlefield {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 470px;
+    height: 470px;
+    background-color: black;
+    gap: 2px;
+    margin: auto;
+    padding: 2px;
+    transform-origin: 50% 100%;
+    transform: scale(1.5) perspective(500px) rotateX(45deg);
+    transform-style: preserve-3d;
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+    background-color: darkgray;
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+.cell:hover {
+    cursor: pointer;
+    border: 5px solid goldenrod;
+}
+
+.pawn {
+    width: 30px;
+    height: 40px;
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
+    background-color: red;
+    transform-origin: 50% 100%;
+    transform-style: preserve-3d;
+    transform: rotateX(-45deg);
+}
+.cell:hover .pawn {
+    bottom: 15px;
+    left: 5px;
+}
+
+.pawn:hover {
+    cursor: pointer;
+    background-color: darkgreen;
+}
