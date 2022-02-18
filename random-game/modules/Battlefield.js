@@ -14,6 +14,13 @@ class Cell {
     initializeCell = () => {
         this.cellElement.classList.add('cell');
     }
+
+    addPawn = (pawnClass) => {
+        let pawnElem = document.createElement('div');
+        let pawn = new pawnClass(pawnElem, this);
+        this.cellElement.append(pawnElem);
+        return pawn;
+    }
 }
 
 
@@ -21,6 +28,7 @@ export default class Battlefield {
 
     fieldElement = null;
     grid = [];
+    pawns = [];
 
     constructor(fieldElement) {
         this.fieldElement = fieldElement;
@@ -37,10 +45,13 @@ export default class Battlefield {
                 let cellObject = new Cell(cell, i, j);
                 this.grid[i].push(cellObject);
                 this.fieldElement.append(cell);
-                // let pawn = document.createElement('div');
-                // pawn.classList.add('pawn');
-                // cell.append(pawn);
             }
         }
     }
+
+    addPawnTo = (pawnClass, posX, posY) => {
+        let pawn = this.grid[posX][posY].addPawn(pawnClass);
+        this.pawns.push(pawn);
+    }
+
 }
