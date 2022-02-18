@@ -1,6 +1,6 @@
 
 
-export default class GameManager {
+export default class MenuManager {
     currentState = 'menu';
     possibleStates = [];
     container = null;

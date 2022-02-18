@@ -1,4 +1,5 @@
 
+import promiseSetTimeout from "./PromisedTimeout.js";
 
 // Pawn is basic cell-placeable element. In this project it also implements basic character behaviour
 // Arrow methods behave as non-virtual, usual xxx(){} as virtual
@@ -6,7 +7,8 @@ export default class Pawn {
 
     pawnElement = null;
     currentCell = null;
-    handlers = null
+    handlers = null;
+    animation = null;
 
     stats = null
     skills = null
@@ -33,6 +35,9 @@ export default class Pawn {
                 'mp': [this.updateMpInfo]
             }
         };
+        this.animation = {
+            stepDelay: 200
+        };
         this.customizeForClass();
         this.initializePawn();
         this.addHandlersToStatChange();
@@ -56,7 +61,7 @@ export default class Pawn {
     }
 
     addHandler = (eventType, handler) => this.handlers[eventType].push(handler);
-    clearHandlers = (eventType) => this.handlers[eventType].clear();
+    clearHandlers = (eventType) => this.handlers[eventType] = [];
 
     addHandlersToStatChange = () => {
         self = this;
@@ -76,4 +81,21 @@ export default class Pawn {
 
     // More game-related methods below
 
+    // Move pawn along route of cells
+    move = async (path) => {
+        return await promiseSetTimeout(() => this.#moveStep(path, 0), this.animation.stepDelay);
+    }
+
+    #moveStep = async (path, index) => {
+        this.#moveToCell(path[index]);
+        if (path.length > index + 1)
+            return await promiseSetTimeout(() => this.#moveStep(path, index + 1), this.animation.stepDelay);
+        return true;
+    }
+
+    #moveToCell = cell => {
+        // Any animation may go here
+        cell.cellElement.append(this.pawnElement);
+        this.currentCell = cell;
+    }
 }

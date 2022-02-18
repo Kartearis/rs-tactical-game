@@ -60,17 +60,22 @@
     transform-style: preserve-3d;
 }
 
-.cell:hover {
+.cell.movement {
+    box-shadow: inset 0 0 10px 2px cyan;
+    border: 5px solid transparent;
+}
+
+.cell.movement:hover {
     cursor: pointer;
-    border: 5px solid goldenrod;
+    box-shadow: inset 0 0 10px 2px deepskyblue;
 }
 
 .pawn {
     width: 30px;
     height: 40px;
     position: absolute;
-    bottom: 20px;
-    left: 10px;
+    bottom: 15px;
+    left: 5px;
     background-color: red;
     transform-origin: 50% 100%;
     transform-style: preserve-3d;
