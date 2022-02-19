@@ -43,7 +43,7 @@ class Cell {
                 adjacent.push(this.battlefield.grid[this.posX - 1][this.posY - 1]);
                 adjacent.push(this.battlefield.grid[this.posX][this.posY - 1]);
             }
-            if (this.posY < this.battlefield.grid[0].length) {
+            if (this.posY < this.battlefield.grid[0].length - 1) {
                 adjacent.push(this.battlefield.grid[this.posX - 1][this.posY + 1]);
                 adjacent.push(this.battlefield.grid[this.posX][this.posY + 1]);
             }
@@ -52,7 +52,7 @@ class Cell {
             adjacent.push(this.battlefield.grid[this.posX + 1][this.posY]);
             if (this.posY > 0)
                 adjacent.push(this.battlefield.grid[this.posX + 1][this.posY - 1]);
-            if (this.posY < this.battlefield.grid[0].length)
+            if (this.posY < this.battlefield.grid[0].length - 1)
                 adjacent.push(this.battlefield.grid[this.posX + 1][this.posY + 1]);
         }
         return adjacent;

@@ -7,7 +7,8 @@ export default class TurnManager {
         currentPawn: null,
         currentState: 'none',
         order: null,
-        nextPawnIndex: 0
+        nextPawnIndex: 0,
+        roundCount: 1
     };
     stateHandlers = {
       'currentPawn': [],
@@ -42,6 +43,11 @@ export default class TurnManager {
 
     startNextTurn () {
         if (!this.state.order) throw new Error("Order is not defined yet!");
+        if (this.state.nextPawnIndex >= this.state.order.length)
+        {
+            this.state.nextPawnIndex = 0;
+            this.newRound();
+        }
         this.state.currentPawn = this.state.order[this.state.nextPawnIndex];
         this.state.currentState = 'move-phase';
         this.state.nextPawnIndex++;
@@ -78,5 +84,10 @@ export default class TurnManager {
         // Do something on turn end? Maybe some turn-transition animation?
         // TODO: CHECK END OF GAME HERE!
         await promiseSetTimeout(() => this.startNextTurn(), this.turnEndDelay);
+    }
+
+    newRound () {
+        this.state.roundCount++;
+        console.log("New round!");
     }
 }
