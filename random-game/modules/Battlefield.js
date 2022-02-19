@@ -66,6 +66,7 @@ class Cell {
     showTarget = (turnManager, attackingPawn) => {
         this.pawn.showTarget(attackingPawn);
         this.pawn.addHandler('leftclick', (ev, to) => turnManager.attackPawnTo(to));
+        this.addHandler('leftclick', (ev, to) => turnManager.attackPawnTo(to.pawn));
     }
 
     removeOverlays = () => {

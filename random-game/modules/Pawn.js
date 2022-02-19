@@ -22,7 +22,9 @@ export default class Pawn {
         this.tags = [];
         this.stats = {
             hp: 0,
+            maxHp: 0,
             mp: 0,
+            maxMp: 0,
             dmgM: 0,
             dmgR: 0,
             def: 0,
@@ -53,6 +55,8 @@ export default class Pawn {
     initializePawn = () => {
         this.pawnElement.classList.add('pawn');
         this.pawnElement.addEventListener('click', this.processClick);
+        if (this.stats.maxMp !== 0)
+            this.pawnElement.style.setProperty('--divider', 2);
         this.updateHpInfo();
         this.updateMpInfo();
     }
@@ -68,11 +72,11 @@ export default class Pawn {
     clearHandlers = (eventType) => this.handlers[eventType] = [];
 
     addHandlersToStatChange = () => {
-        self = this;
+        let self = this;
         this.stats = new Proxy(this.stats, {
             set: (target, property, value) => {
                 target[property] = value;
-                // For now assume that handlers are argementless
+                // For now assume that handlers are argumentless
                 if (self.handlers.statchange[property] !== undefined) self.handlers.statchange[property].forEach(h => h());
                 return true;
             }
@@ -80,8 +84,16 @@ export default class Pawn {
     }
 
 
-    updateHpInfo = () => this.pawnElement.dataset['hp'] = this.stats.hp;
-    updateMpInfo = () => this.pawnElement.dataset['mp'] = this.stats.mp;
+    updateHpInfo = () => {
+        this.pawnElement.dataset['hp'] = this.stats.hp;
+        this.pawnElement.style.setProperty('--current-hp',this.stats.hp / this.stats.maxHp * 100 + '%');
+    }
+    updateMpInfo = () => {
+        // if no mp is present, do not update anything
+        if (this.stats.maxMp === 0) return;
+        this.pawnElement.dataset['mp'] = this.stats.mp;
+        this.pawnElement.style.setProperty('--current-mp', this.stats.mp / this.stats.maxMp * 100 + '%');
+    }
 
     // More game-related methods below
 
@@ -126,8 +138,24 @@ export default class Pawn {
     // Attack given pawn
     attack = async (pawn) => {
         // Determine if attack is melee or ranged
+        let type = 'melee';
+        if (Math.abs(pawn.currentCell.posX - this.currentCell.posX) > 1
+            || Math.abs(pawn.currentCell.posY - this.currentCell.posY) > 1)
+            type = 'ranged';
         // Start animation if any
         // Deal damage
-        // Process side-effects
+        this.dealDamage(pawn, type);
     }
+
+    dealDamage(targetPawn, attackType) {
+        let damage = (attackType === 'ranged' ? this.stats.dmgR : this.stats.dmgM) * (0.75 + Math.random() / 2);
+        targetPawn.receiveDamage(Math.floor(damage), this, attackType);
+    }
+
+    receiveDamage(damage, attackingPawn, attackType) {
+        let reducedDamage = damage - Math.round((0.75 + Math.random() / 2) * this.stats.def);
+        this.stats.hp -= reducedDamage;
+    }
+
+
 }

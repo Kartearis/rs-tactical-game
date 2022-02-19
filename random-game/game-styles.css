@@ -112,6 +112,30 @@
     transform-origin: 50% 100%;
     transform-style: preserve-3d;
     transform: rotateX(-45deg);
+    --current-hp: 100%;
+    --current-mp: 0%;
+    --divider: 1;
+}
+
+/* Hp/mp display */
+.pawn::after {
+    position: absolute;
+    top: -15px;
+    left: calc(-20px + 15px);
+    width: 40px;
+    height: 6px;
+    border: 1px solid black;
+    content: "";
+    background: linear-gradient(to right,
+        red 0%,
+        red calc(var(--current-hp) / var(--divider)),
+        antiquewhite calc(var(--current-hp) / var(--divider)),
+        antiquewhite 50%,
+        cornflowerblue 50%,
+        cornflowerblue calc(var(--current-mp) / var(--divider) + 50%),
+        antiquewhite calc(var(--current-mp) / var(--divider) + 50%),
+        antiquewhite 100%
+    );
 }
 
 .pawn.targetable {
@@ -128,6 +152,7 @@
     background-color: darkgreen;
 }
 /* Maybe styling on hover will get more difficult*/
-.pawn.targetable:hover {
+.pawn.targetable:hover,
+.cell.targetable:hover .pawn.targetable{
     filter: hue-rotate(90deg);
 }

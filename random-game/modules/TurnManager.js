@@ -59,6 +59,7 @@ export default class TurnManager {
     }
 
     // Attack given pawn with current pawn
+    // Current implementation does not allow other pawns to intervene in any way
     async attackPawnTo (pawn) {
         this.battlefield.hideCellOverlays();
         await this.state.currentPawn.attack(pawn);
