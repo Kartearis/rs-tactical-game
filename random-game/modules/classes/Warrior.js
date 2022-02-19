@@ -12,9 +12,9 @@ export default class Warrior extends Pawn {
         console.log(this.stats);
     }
 
-    constructor(pawnElement, currentCell) {
-        super(pawnElement, currentCell);
-    }
+    // constructor(pawnElement, currentCell, owner) {
+    //     super(pawnElement, currentCell, owner);
+    // }
 
 
 }

@@ -1,5 +1,5 @@
 
-
+import promiseSetTimeout from "./PromisedTimeout.js";
 // Turn consists of two phases: movement then attack. Attack can be made instead of movement, but it ends turn.
 export default class TurnManager {
 
@@ -16,7 +16,7 @@ export default class TurnManager {
       'nextPawnIndex': []
     };
 
-
+    turnEndDelay = 1000;
     battlefield = null;
 
     constructor(battlefield) {
@@ -45,14 +45,37 @@ export default class TurnManager {
         this.state.currentPawn = this.state.order[this.state.nextPawnIndex];
         this.state.currentState = 'move-phase';
         this.state.nextPawnIndex++;
-        this.battlefield.showMovement(this.state.currentPawn, this);
-        // Also show available targets here
+        let movementCells = this.battlefield.showMovement(this.state.currentPawn, this);
+        if (movementCells.length === 0)
+            this.startAttackPhase();
+        else this.battlefield.showPossibleAttacks(this.state.currentPawn, this);
     }
 
     async movePawnTo (cell) {
         this.battlefield.hideCellOverlays();
         let path = this.battlefield.findPath(this.state.currentPawn.currentCell, cell, this.state.currentPawn);
         await this.state.currentPawn.move(path);
+        this.startAttackPhase();
+    }
+
+    // Attack given pawn with current pawn
+    async attackPawnTo (pawn) {
+        this.battlefield.hideCellOverlays();
+        await this.state.currentPawn.attack(pawn);
+        this.endTurn();
+    }
+
+    startAttackPhase () {
         this.state.currentState = 'attack-phase';
+        let targets = this.battlefield.showPossibleAttacks(this.state.currentPawn, this);
+        if (targets.length === 0)
+            this.endTurn();
+    }
+
+    async endTurn () {
+        this.state.currentState = 'end-phase';
+        // Do something on turn end? Maybe some turn-transition animation?
+        // TODO: CHECK END OF GAME HERE!
+        await promiseSetTimeout(() => this.startNextTurn(), this.turnEndDelay);
     }
 }

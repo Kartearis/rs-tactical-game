@@ -10,12 +10,16 @@ export default class Pawn {
     handlers = null;
     animation = null;
 
-    stats = null
-    skills = null
+    stats = null;
+    skills = null;
+    tags = null;
+    owner = null;
 
-    constructor(pawnElement, currentCell) {
+    constructor(pawnElement, currentCell, owner="player") {
         this.pawnElement = pawnElement;
         this.currentCell = currentCell;
+        this.owner = owner;
+        this.tags = [];
         this.stats = {
             hp: 0,
             mp: 0,
@@ -81,6 +85,19 @@ export default class Pawn {
 
     // More game-related methods below
 
+    showTarget = (attackingPawn) => {
+        this.pawnElement.style.setProperty('--target-color', attackingPawn.owner === this.owner ? 'green' : 'crimson');
+        this.currentCell.cellElement.style.setProperty('--target-color', attackingPawn.owner === this.owner ? 'green' : 'crimson');
+        this.currentCell.cellElement.classList.add('targetable');
+        this.pawnElement.classList.add('targetable');
+    }
+
+    hideTarget = () => {
+        this.currentCell.cellElement.classList.remove('targetable');
+        this.pawnElement.classList.remove('targetable');
+    }
+
+
     // Move pawn along route of cells
     move = async (path) => {
         return await promiseSetTimeout(() => this.#moveStep(path, 0), this.animation.stepDelay);
@@ -95,7 +112,22 @@ export default class Pawn {
 
     #moveToCell = cell => {
         // Any animation may go here
-        cell.cellElement.append(this.pawnElement);
+        // Remove self ref from previous cell
+        this.currentCell.pawn = null;
+        // Change self cell ref
         this.currentCell = cell;
+        // Change new cell pawn ref to self
+        cell.pawn = this;
+        // Make dom changes
+        cell.cellElement.append(this.pawnElement);
+
+    }
+
+    // Attack given pawn
+    attack = async (pawn) => {
+        // Determine if attack is melee or ranged
+        // Start animation if any
+        // Deal damage
+        // Process side-effects
     }
 }

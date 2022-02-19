@@ -14,6 +14,8 @@ window.addEventListener('DOMContentLoaded', () => {
     manager = new MenuManager(document.getElementById('game-container'));
     field = new Battlefield(document.getElementById('battlefield'));
     field.addPawnTo(Warrior, 3, 4);
+    field.addPawnTo(Warrior, 3, 5, 'ai');
+    field.addPawnTo(Warrior, 8, 8, 'ai');
     turnManager = new TurnManager(field);
     turnManager.calculateTurnOrder();
     turnManager.startNextTurn();
