@@ -10,7 +10,8 @@ export default class TurnManager {
         currentState: 'none',
         order: null,
         nextPawnIndex: 0,
-        roundCount: 1
+        roundCount: 1,
+        winner: null
     };
     stateHandlers = {
       'currentPawn': [],
@@ -108,6 +109,7 @@ export default class TurnManager {
         let firstOwner = this.state.order[0].owner;
         for (let pawn of this.state.order)
             if (pawn.owner !== firstOwner) return false;
+        this.state.winner = firstOwner;
         return true;
     }
 
@@ -117,8 +119,22 @@ export default class TurnManager {
     }
 
     endGame() {
-        this.menuManager.changeState('finish');
-        this.startNewGame();
+        if (this.state.winner === 'player')
+        {
+            document.getElementById('score').innerText = this.calculateScore('player').toString();
+            document.getElementById('mapname').innerText = 'test';
+            this.menuManager.changeState('finish-win');
+        }
+        else this.menuManager.changeState('finish-lose');
+    }
+
+    calculateScore(owner) {
+        // Score is calculated based on remaining pawns, their remaining hp and used rounds.
+        let remainingPawns = this.state.order.filter(p => p.owner === owner);
+        let score = remainingPawns.length * 1000;
+        score += remainingPawns.reduce((s, p) => s += Math.floor(p.stats.hp / p.stats.maxHp * 500), 0);
+        score += 1 / Math.sqrt(this.state.roundCount) * 5000;
+        return score;
     }
 
     startNewGame = () => {
@@ -132,6 +148,7 @@ export default class TurnManager {
         this.state.currentPawn = null;
         this.state.nextPawnIndex = 0;
         this.state.roundCount = 1;
+        this.state.winner = null;
 
         this.calculateTurnOrder();
         this.startNextTurn();
