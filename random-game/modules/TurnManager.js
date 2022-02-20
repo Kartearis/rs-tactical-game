@@ -1,7 +1,7 @@
 
 import promiseSetTimeout from "./PromisedTimeout.js";
 
-import Archer from "./classes/Archer.js";
+import ScenarioManager from "./scenarioManager.js";
 // Turn consists of two phases: movement then attack. Attack can be made instead of movement, but it ends turn.
 export default class TurnManager {
 
@@ -11,7 +11,8 @@ export default class TurnManager {
         order: null,
         nextPawnIndex: 0,
         roundCount: 1,
-        winner: null
+        winner: null,
+        map: null
     };
     stateHandlers = {
       'currentPawn': [],
@@ -97,7 +98,6 @@ export default class TurnManager {
         if (this.state.nextPawnIndex >= this.state.order.length)
             this.state.nextPawnIndex = 0;
         // Do something on turn end? Maybe some turn-transition animation?
-        // TODO: CHECK END OF GAME HERE!
         if (this.checkGameFinished())
             await promiseSetTimeout(() => this.endGame(), this.turnEndDelay);
         else
@@ -122,7 +122,7 @@ export default class TurnManager {
         if (this.state.winner === 'player')
         {
             document.getElementById('score').innerText = this.calculateScore('player').toString();
-            document.getElementById('mapname').innerText = 'test';
+            document.getElementById('mapname').innerText = this.state.map;
             this.menuManager.changeState('finish-win');
         }
         else this.menuManager.changeState('finish-lose');
@@ -138,17 +138,19 @@ export default class TurnManager {
     }
 
     startNewGame = () => {
-        this.battlefield.reset();
-        // Pawn placing logic here
-        this.battlefield.addPawnTo(Archer, 2, 0);
-        this.battlefield.addPawnTo(Archer, 2, 8, 'ai');
-        //
         this.state.currentState = 'none';
         this.state.order = null;
         this.state.currentPawn = null;
         this.state.nextPawnIndex = 0;
         this.state.roundCount = 1;
         this.state.winner = null;
+        this.state.map = null;
+        this.battlefield.reset();
+        // Pawn placing logic here
+        let scenario = ScenarioManager.getRandomScenario();
+        this.state.map = scenario.name;
+        scenario.preset.forEach(preset => this.battlefield.addPawnTo(preset.class, preset.pos[1], preset.pos[0], preset.owner));
+        //
 
         this.calculateTurnOrder();
         this.startNextTurn();
