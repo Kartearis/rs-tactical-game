@@ -1,5 +1,7 @@
 
 import promiseSetTimeout from "./PromisedTimeout.js";
+
+import Archer from "./classes/Archer.js";
 // Turn consists of two phases: movement then attack. Attack can be made instead of movement, but it ends turn.
 export default class TurnManager {
 
@@ -19,10 +21,12 @@ export default class TurnManager {
 
     turnEndDelay = 1000;
     battlefield = null;
+    menuManager = null;
 
-    constructor(battlefield) {
+    constructor(battlefield, menuManager) {
         self = this;
         this.battlefield = battlefield;
+        this.menuManager = menuManager;
         this.state = new Proxy(this.state, {
             set: (target, property, value) => {
                 target[property] = value;
@@ -93,11 +97,43 @@ export default class TurnManager {
             this.state.nextPawnIndex = 0;
         // Do something on turn end? Maybe some turn-transition animation?
         // TODO: CHECK END OF GAME HERE!
-        await promiseSetTimeout(() => this.startNextTurn(), this.turnEndDelay);
+        if (this.checkGameFinished())
+            await promiseSetTimeout(() => this.endGame(), this.turnEndDelay);
+        else
+            await promiseSetTimeout(() => this.startNextTurn(), this.turnEndDelay);
+    }
+
+    checkGameFinished() {
+        if (this.state.order.length === 0) return true;
+        let firstOwner = this.state.order[0].owner;
+        for (let pawn of this.state.order)
+            if (pawn.owner !== firstOwner) return false;
+        return true;
     }
 
     newRound () {
         this.state.roundCount++;
         console.log("New round!");
+    }
+
+    endGame() {
+        this.menuManager.changeState('finish');
+        this.startNewGame();
+    }
+
+    startNewGame = () => {
+        this.battlefield.reset();
+        // Pawn placing logic here
+        this.battlefield.addPawnTo(Archer, 2, 0);
+        this.battlefield.addPawnTo(Archer, 2, 8, 'ai');
+        //
+        this.state.currentState = 'none';
+        this.state.order = null;
+        this.state.currentPawn = null;
+        this.state.nextPawnIndex = 0;
+        this.state.roundCount = 1;
+
+        this.calculateTurnOrder();
+        this.startNextTurn();
     }
 }

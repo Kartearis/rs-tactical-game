@@ -88,6 +88,11 @@ class Cell {
 
     addHandler = (eventType, handler) => this.handlers[eventType].push(handler);
     clearHandlers = (eventType) => this.handlers[eventType] = [];
+
+    destroy = () => {
+        if (this.pawn) this.pawn.destroy();
+        this.cellElement.remove();
+    }
 }
 
 
@@ -95,6 +100,7 @@ export default class Battlefield {
 
     fieldElement = null;
     grid = [];
+    // This array does not track if pawn is dead (it is only tracked at turn-manager level
     pawns = [];
 
     constructor(fieldElement) {
@@ -179,6 +185,13 @@ export default class Battlefield {
 
     resetCellsPF() {
         this.grid.forEach(row => row.forEach(cell => cell.pathfindingDistance = -1));
+    }
+
+    reset() {
+        this.grid.flat().forEach(cell => cell.destroy());
+        this.grid = [];
+        this.pawns = [];
+        this.spawnCells();
     }
 
 }

@@ -89,6 +89,10 @@ export default class Pawn {
         });
     }
 
+    destroy = () => {
+        this.pawnElement.remove();
+    }
+
 
     updateHpInfo = () => {
         this.pawnElement.dataset['hp'] = this.stats.hp;
