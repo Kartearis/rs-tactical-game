@@ -117,10 +117,23 @@
     --divider: 1;
 }
 
+/* Displaying controlled pawn */
+.pawn.active::before {
+    position: absolute;
+    content: "";
+    top: -22px;
+    left: calc(30px / 2 - 10px);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 10px 0 10px;
+    border-color: red transparent transparent transparent;
+}
+
 /* Hp/mp display */
 .pawn::after {
     position: absolute;
-    top: -15px;
+    top: -10px;
     left: calc(-20px + 15px);
     width: 40px;
     height: 6px;

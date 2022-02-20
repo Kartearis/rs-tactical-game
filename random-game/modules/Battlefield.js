@@ -130,10 +130,8 @@ export default class Battlefield {
 
     showPossibleAttacks(pawn, turnManager) {
         let cellsInReach = this.wideSearch(pawn.currentCell, pawn.stats.range, false);
-        console.log(cellsInReach);
         cellsInReach = cellsInReach.filter(c => c.pawn !== null && c.pawn.owner !== pawn.owner);
         cellsInReach.forEach(c => c.showTarget(turnManager, pawn));
-        console.log(cellsInReach);
         return cellsInReach;
     }
 

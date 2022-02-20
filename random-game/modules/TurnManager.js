@@ -49,6 +49,7 @@ export default class TurnManager {
             this.newRound();
         }
         this.state.currentPawn = this.state.order[this.state.nextPawnIndex];
+        this.state.currentPawn.showActive();
         this.state.currentState = 'move-phase';
         this.state.nextPawnIndex++;
         let movementCells = this.battlefield.showMovement(this.state.currentPawn, this);
@@ -81,6 +82,15 @@ export default class TurnManager {
 
     async endTurn () {
         this.state.currentState = 'end-phase';
+        this.state.currentPawn.hideActive();
+        let deadStates = await Promise.all(this.state.order.map(pawn => pawn.isDead()));
+        let reduceIndex = 0;
+        this.state.order = this.state.order.filter(
+            (p, i) => {if (deadStates[i] && i < this.state.nextPawnIndex) reduceIndex++; return !deadStates[i];}
+        );
+        this.state.nextPawnIndex -= reduceIndex;
+        if (this.state.nextPawnIndex >= this.state.order.length)
+            this.state.nextPawnIndex = 0;
         // Do something on turn end? Maybe some turn-transition animation?
         // TODO: CHECK END OF GAME HERE!
         await promiseSetTimeout(() => this.startNextTurn(), this.turnEndDelay);

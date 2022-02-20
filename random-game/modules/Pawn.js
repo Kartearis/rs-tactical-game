@@ -15,11 +15,16 @@ export default class Pawn {
     tags = null;
     owner = null;
 
+    specialStates = null;
+
     constructor(pawnElement, currentCell, owner="player") {
         this.pawnElement = pawnElement;
         this.currentCell = currentCell;
         this.owner = owner;
         this.tags = [];
+        this.specialStates = {
+            dying: false
+        };
         this.stats = {
             hp: 0,
             maxHp: 0,
@@ -37,7 +42,7 @@ export default class Pawn {
             'leftclick': [],
             'rightclick': [],
             'statchange': {
-                'hp': [this.updateHpInfo],
+                'hp': [this.updateHpInfo, this.checkDeath],
                 'mp': [this.updateMpInfo]
             }
         };
@@ -95,6 +100,26 @@ export default class Pawn {
         this.pawnElement.style.setProperty('--current-mp', this.stats.mp / this.stats.maxMp * 100 + '%');
     }
 
+    checkDeath = () => {
+        if (this.stats.hp <= 0) {
+            this.specialStates.dying = true;
+            this.die().then((isDead) => this.specialStates.dying = false);
+        }
+    }
+
+    die = async () => {
+        // Animate death
+        this.currentCell.pawn = null;
+        this.pawnElement.remove();
+    }
+
+    // Implements half-bysy wait for death animation to end
+    isDead = async () => {
+        while (this.specialStates.dying)
+            await promiseSetTimeout(() => this.specialStates.dying, 50);
+        return this.stats.hp <= 0;
+    }
+
     // More game-related methods below
 
     showTarget = (attackingPawn) => {
@@ -107,6 +132,14 @@ export default class Pawn {
     hideTarget = () => {
         this.currentCell.cellElement.classList.remove('targetable');
         this.pawnElement.classList.remove('targetable');
+    }
+
+    showActive = () => {
+        this.pawnElement.classList.add('active');
+    }
+
+    hideActive = () => {
+        this.pawnElement.classList.remove('active');
     }
 
 
