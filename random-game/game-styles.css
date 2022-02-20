@@ -103,8 +103,9 @@
 }
 
 .pawn {
-    width: 30px;
-    height: 40px;
+    pointer-events: none;
+    width: 40px;
+    height: 30px;
     position: absolute;
     bottom: 15px;
     left: 5px;
@@ -152,13 +153,14 @@
 }
 
 .pawn.targetable {
-
+    /* Maybe even this is not necessary - only target cells*/
+    pointer-events: auto;
 }
 
-.cell:hover .pawn {
-    bottom: 15px;
-    left: 5px;
-}
+/*.cell:hover .pawn {*/
+/*    bottom: 15px;*/
+/*    left: 5px;*/
+/*}*/
 
 .pawn:hover {
     cursor: pointer;
@@ -167,5 +169,190 @@
 /* Maybe styling on hover will get more difficult*/
 .pawn.targetable:hover,
 .cell.targetable:hover .pawn.targetable{
-    filter: hue-rotate(90deg);
+    filter: hue-rotate(180deg);
 }
+
+.pawn.opposite {
+    transform: rotateX(-45deg) scaleX(-1);
+}
+
+.pawn.opposite::after {
+    transform: scaleX(-1);
+}
+
+.pawn.warrior {
+    width: 58px;
+    height: 50px;
+    left: 8px;
+    background-color: transparent;
+    background-image: url("assets/game/sprites/Warrior/Knight_03__IDLE_000.png");
+    background-repeat: no-repeat;
+    background-position: 62% 40%;
+    background-size: 180px 100px;
+    /*border: 1px solid red;*/
+}
+
+.pawn.warrior.opposite {
+    left: -15px;
+}
+
+.pawn.spearman {
+    width: 63px;
+    height: 50px;
+    left: 5px;
+    background-color: transparent;
+    background-image: url("./assets/game/sprites/Spearman/Knight_01__IDLE_000.png");
+    background-repeat: no-repeat;
+    background-position: 65% 33%;
+    background-size: 162px 90px;
+    /*border: 1px solid red;*/
+}
+
+.pawn.spearman.opposite {
+    left: -20px;
+}
+
+.pawn.archer {
+    width: 45px;
+    height: 50px;
+    left: 4px;
+    background-color: transparent;
+    background-image: url("./assets/game/sprites/Archer/Elf_01__IDLE_000.png");
+    background-repeat: no-repeat;
+    background-position: 50% 55%;
+    background-size: 162px 90px;
+    border: 1px solid red;
+}
+
+.pawn.archer.opposite {
+
+}
+
+.pawn.orc {
+    width: 55px;
+    height: 45px;
+    left: 6px;
+    background-color: transparent;
+    background-image: url("assets/game/sprites/Orc/ORK_03_IDLE_000.png");
+    background-repeat: no-repeat;
+    background-position: 57% 80%;
+    background-size: 162px 90px;
+    border: 1px solid red;
+}
+
+.pawn.orc.opposite {
+    left: -10px;
+}
+
+.pawn.goblin {
+    width: 40px;
+    height: 40px;
+    left: 13px;
+    background-color: transparent;
+    background-image: url("assets/game/sprites/Goblin/Minotaur_03_Idle_000.png");
+    background-repeat: no-repeat;
+    background-position: 80% 70%;
+    background-size: 58px 40px;
+    border: 1px solid red;
+}
+
+.pawn.goblin.opposite {
+    left: -3px;
+}
+
+.pawn.elf {
+    width: 45px;
+    height: 48px;
+    left: 10px;
+    background-color: transparent;
+    background-image: url("assets/game/sprites/Elf/Elf_03__IDLE_000.png");
+    background-repeat: no-repeat;
+    background-position: 53% 65%;
+    background-size: 162px 90px;
+    border: 1px solid red;
+}
+
+.pawn.elf.opposite {
+    left: -2px;
+}
+
+.pawn.pirate {
+    width: 55px;
+    height: 50px;
+    left: 6px;
+    background-color: transparent;
+    background-image: url("assets/game/sprites/Pirate/2_entity_000_IDLE_000.png");
+    background-repeat: no-repeat;
+    background-position: 42% 70%;
+    background-size: 78px 66px;
+    border: 1px solid red;
+}
+
+.pawn.pirate.opposite {
+    left: -10px;
+}
+
+.pawn.healer {
+    width: 55px;
+    height: 50px;
+    left: -1px;
+    background-color: transparent;
+    background-image: url("assets/game/sprites/Healer/Fairy_03__IDLE_000.png");
+    background-repeat: no-repeat;
+    background-position: 50% 65%;
+    background-size: 162px 90px;
+    border: 1px solid red;
+}
+
+.pawn.healer.opposite {
+    left: -1px;
+}
+
+.pawn.amazon {
+    width: 45px;
+    height: 58px;
+    left: 6px;
+    background-color: transparent;
+    background-image: url("assets/game/sprites/Amazon/Warrior_02__IDLE_000.png");
+    background-repeat: no-repeat;
+    background-position: 55% 75%;
+    background-size: 120px 72px;
+    border: 1px solid red;
+}
+
+.pawn.amazon.opposite {
+    left: 0px;
+}
+
+.pawn.troll {
+    width: 55px;
+    height: 45px;
+    left: 6px;
+    background-color: transparent;
+    background-image: url("assets/game/sprites/Orc/ORK_03_IDLE_000.png");
+    background-repeat: no-repeat;
+    background-position: 57% 80%;
+    background-size: 162px 90px;
+    border: 1px solid red;
+}
+
+.pawn.troll.opposite {
+    left: -10px;
+}
+
+.pawn.ghost {
+    width: 55px;
+    height: 45px;
+    left: 6px;
+    background-color: transparent;
+    background-image: url("assets/game/sprites/Orc/ORK_03_IDLE_000.png");
+    background-repeat: no-repeat;
+    background-position: 57% 80%;
+    background-size: 162px 90px;
+    border: 1px solid red;
+}
+
+.pawn.ghost.opposite {
+    left: -10px;
+}
+

@@ -36,9 +36,9 @@ export default class TurnManager {
 
     calculateTurnOrder () {
         // Sort pawns by initiative then speed. Save it for future reference
-        this.state.order = [...this.battlefield.pawns].sort((x, y) => x.stats.init > y.stats.init ? 1
-            : x.stats.init < y.stats.init ? -1
-                : x.stats.spd > y.stats.spd ? 1 : x.stats.spd === y.stats.spd ? 0 : -1);
+        this.state.order = [...this.battlefield.pawns].sort((x, y) => x.stats.init > y.stats.init ? -1
+            : x.stats.init < y.stats.init ? 1
+                : x.stats.spd > y.stats.spd ? -1 : x.stats.spd === y.stats.spd ? 0 : 1);
     }
 
     startNextTurn () {

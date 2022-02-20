@@ -9,7 +9,7 @@ export default class Warrior extends Pawn {
     customizeForClass () {
         // Load stats and merge them with basic
         Object.assign(this.stats, Stats);
-        console.log(this.stats);
+        this.pawnElement.classList.add("warrior");
     }
 
     // constructor(pawnElement, currentCell, owner) {

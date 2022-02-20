@@ -59,6 +59,7 @@ export default class Pawn {
 
     initializePawn = () => {
         this.pawnElement.classList.add('pawn');
+        if (this.owner !== 'player') this.pawnElement.classList.add('opposite');
         this.pawnElement.addEventListener('click', this.processClick);
         if (this.stats.maxMp !== 0)
             this.pawnElement.style.setProperty('--divider', 2);
