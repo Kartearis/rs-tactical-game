@@ -3,7 +3,7 @@
 import Pawn from '../Pawn.js';
 import Stats from './stats/ArcherStats.js';
 
-
+// Archer is basic ranged character. Very weak in melee, but fast and can attack at great range
 export default class Archer extends Pawn {
 
     customizeForClass () {

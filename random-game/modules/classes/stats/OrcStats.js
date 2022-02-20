@@ -1,9 +1,9 @@
 // Stats are merged with basic
 export default {
-  hp: 30,
-  maxHp: 30,
-  dmgM: 10,
-  def: 4,
+  hp: 40,
+  maxHp: 40,
+  dmgM: 5,
+  def: 0,
   spd: 3,
-  init: 3
+  init: 2
 };

@@ -2,7 +2,7 @@
 export default {
   hp: 10,
   maxHp: 10,
-  dmgM: 1,
+  dmgM: 2,
   dmgR: 7,
   range: 7,
   def: 1,

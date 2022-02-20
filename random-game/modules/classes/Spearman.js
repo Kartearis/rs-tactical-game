@@ -3,7 +3,7 @@
 import Pawn from '../Pawn.js';
 import Stats from './stats/SpearmanStats.js';
 
-
+// Spearman is armored unit with powerfull attack at short range and weak attack in melee.
 export default class Spearman extends Pawn {
 
     customizeForClass () {

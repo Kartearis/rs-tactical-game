@@ -3,7 +3,7 @@
 import Pawn from '../Pawn.js';
 import Stats from './stats/GoblinStats.js';
 
-
+// Goblin is agile but weak warrior. It could have inflicted effects, if they were implemented)
 export default class Goblin extends Pawn {
 
     customizeForClass () {

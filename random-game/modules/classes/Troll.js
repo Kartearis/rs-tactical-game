@@ -3,7 +3,7 @@
 import Pawn from '../Pawn.js';
 import Stats from './stats/TrollStats.js';
 
-
+// Troll is massive tanky lump of meat, regenerating at every turn. It deals a lot of damage but is quite slow
 export default class Troll extends Pawn {
 
     customizeForClass () {

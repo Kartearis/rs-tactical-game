@@ -32,8 +32,8 @@ window.addEventListener('DOMContentLoaded', () => {
     field.addPawnTo(Pirate, 6, 0);
     field.addPawnTo(Healer, 7, 0);
     field.addPawnTo(Amazon, 8, 0);
-    // field.addPawnTo(Troll, 2, 2);
-    // field.addPawnTo(Ghost, 4, 2);
+    field.addPawnTo(Troll, 2, 2);
+    field.addPawnTo(Ghost, 4, 2);
     field.addPawnTo(Warrior, 0, 8, 'ai');
     field.addPawnTo(Spearman, 1, 8, 'ai');
     field.addPawnTo(Archer, 2, 8, 'ai');
@@ -43,8 +43,8 @@ window.addEventListener('DOMContentLoaded', () => {
     field.addPawnTo(Pirate, 6, 8, 'ai');
     field.addPawnTo(Healer, 7, 8, 'ai');
     field.addPawnTo(Amazon, 8, 8, 'ai');
-    // field.addPawnTo(Troll, 2, 6, 'ai');
-    // field.addPawnTo(Ghost, 4, 6, 'ai');
+    field.addPawnTo(Troll, 2, 6, 'ai');
+    field.addPawnTo(Ghost, 4, 6, 'ai');
     turnManager = new TurnManager(field);
     turnManager.calculateTurnOrder();
     turnManager.startNextTurn();

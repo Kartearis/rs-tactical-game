@@ -49,7 +49,7 @@
     margin: auto;
     padding: 2px;
     transform-origin: 50% 100%;
-    transform: scale(1.5) perspective(500px) rotateX(45deg);
+    transform: scale(2) perspective(500px) rotateX(45deg);
     transform-style: preserve-3d;
     z-index: 0;
 }
@@ -58,6 +58,8 @@
     width: 50px;
     height: 50px;
     background-color: darkgray;
+    background-image: url("./assets/game/tiles/grass_green_block_256x.png");
+    background-size: 50px 50px;
     position: relative;
     /*z-index: 0;*/
     transform-style: preserve-3d;
@@ -103,6 +105,7 @@
 }
 
 .pawn {
+    image-rendering: crisp-edges;
     pointer-events: none;
     width: 40px;
     height: 30px;
@@ -128,7 +131,8 @@
     height: 0;
     border-style: solid;
     border-width: 10px 10px 0 10px;
-    border-color: red transparent transparent transparent;
+    opacity: 0.8;
+    border-color: crimson transparent transparent transparent;
 }
 
 /* Hp/mp display */
@@ -137,7 +141,8 @@
     top: -10px;
     left: calc(-20px + 15px);
     width: 40px;
-    height: 6px;
+    height: 2px;
+    opacity: 0.6;
     border: 1px solid black;
     content: "";
     background: linear-gradient(to right,
@@ -154,7 +159,7 @@
 
 .pawn.targetable {
     /* Maybe even this is not necessary - only target cells*/
-    pointer-events: auto;
+    /*pointer-events: auto;*/
 }
 
 /*.cell:hover .pawn {*/
@@ -189,7 +194,6 @@
     background-repeat: no-repeat;
     background-position: 62% 40%;
     background-size: 180px 100px;
-    /*border: 1px solid red;*/
 }
 
 .pawn.warrior.opposite {
@@ -205,7 +209,6 @@
     background-repeat: no-repeat;
     background-position: 65% 33%;
     background-size: 162px 90px;
-    /*border: 1px solid red;*/
 }
 
 .pawn.spearman.opposite {
@@ -221,7 +224,6 @@
     background-repeat: no-repeat;
     background-position: 50% 55%;
     background-size: 162px 90px;
-    border: 1px solid red;
 }
 
 .pawn.archer.opposite {
@@ -237,7 +239,6 @@
     background-repeat: no-repeat;
     background-position: 57% 80%;
     background-size: 162px 90px;
-    border: 1px solid red;
 }
 
 .pawn.orc.opposite {
@@ -253,7 +254,6 @@
     background-repeat: no-repeat;
     background-position: 80% 70%;
     background-size: 58px 40px;
-    border: 1px solid red;
 }
 
 .pawn.goblin.opposite {
@@ -269,7 +269,6 @@
     background-repeat: no-repeat;
     background-position: 53% 65%;
     background-size: 162px 90px;
-    border: 1px solid red;
 }
 
 .pawn.elf.opposite {
@@ -285,7 +284,6 @@
     background-repeat: no-repeat;
     background-position: 42% 70%;
     background-size: 78px 66px;
-    border: 1px solid red;
 }
 
 .pawn.pirate.opposite {
@@ -301,7 +299,6 @@
     background-repeat: no-repeat;
     background-position: 50% 65%;
     background-size: 162px 90px;
-    border: 1px solid red;
 }
 
 .pawn.healer.opposite {
@@ -317,42 +314,40 @@
     background-repeat: no-repeat;
     background-position: 55% 75%;
     background-size: 120px 72px;
-    border: 1px solid red;
 }
 
 .pawn.amazon.opposite {
-    left: 0px;
+    left: 0;
 }
 
 .pawn.troll {
-    width: 55px;
-    height: 45px;
-    left: 6px;
+    width: 85px;
+    height: 70px;
+    left: -5px;
     background-color: transparent;
-    background-image: url("assets/game/sprites/Orc/ORK_03_IDLE_000.png");
+    background-image: url("assets/game/sprites/Troll/Troll_02_1_IDLE_000.png");
     background-repeat: no-repeat;
-    background-position: 57% 80%;
-    background-size: 162px 90px;
-    border: 1px solid red;
+    background-position: 59% 75%;
+    background-size: 200px 125px;
 }
 
 .pawn.troll.opposite {
-    left: -10px;
+    left: -25px;
 }
 
 .pawn.ghost {
-    width: 55px;
+    width: 45px;
     height: 45px;
     left: 6px;
+    bottom: 20px;
     background-color: transparent;
-    background-image: url("assets/game/sprites/Orc/ORK_03_IDLE_000.png");
+    background-image: url("assets/game/sprites/Ghost/Wraith_01_Idle_000.png");
     background-repeat: no-repeat;
-    background-position: 57% 80%;
-    background-size: 162px 90px;
-    border: 1px solid red;
+    background-position: 57% 30%;
+    background-size: 70px 54px;
 }
 
 .pawn.ghost.opposite {
-    left: -10px;
+    left: -3px;
 }
 
