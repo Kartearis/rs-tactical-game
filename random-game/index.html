@@ -38,7 +38,127 @@
         </div>
     </div>
     <div class="game" data-state="manual">
-        Manual
+        <div class="manual">
+            <h2>Manual</h2>
+            <div class="scrollable">
+                    <h3>About</h3>
+                    <p>
+                        This game is about tactical battles with enemies. Several scenarios available, one of which is selected
+                        by random on each game start. If you win the game, you are awarded score points based on remaining characters,
+                        their relative healthiness and spent rounds (round is when all characters have made a move).
+                    </p>
+                    <h3>Characters</h3>
+                    <p>
+                        There are 11 characters available in game (though not all of them are controlled by player in scenarios).
+                    </p>
+                    <div class="pawn-gallery">
+                        <div class="pawn-card">
+                            <div class="pawn warrior">
+                            </div>
+                            <p>
+                                Warrior is the most basic and versatile of all characters.
+                                Warrior has good melee damage, good armor, speed and initiative, but each of these stats is not the best among all
+                                characters.
+                            </p>
+                        </div>
+                        <div class="pawn-card">
+                            <div class="pawn spearman">
+                            </div>
+                            <p>
+                                Spearman is armored character with reach attack.
+                                He can do a lot of damage to enemies with his spear over one cell, but struggles to
+                                hurt enemies in close combat.
+                            </p>
+                        </div>
+                        <div class="pawn-card">
+                            <div class="pawn archer">
+                            </div>
+                            <p>
+                                Archer has the best range in game (almost whole field), but his damage is not very impressive.
+                                In melee he deals miniscule amounts of damage, usually too little to pierce armor.
+                                He can use great speed and initiative to maintain distance with enemies.
+                            </p>
+                        </div>
+                        <div class="pawn-card">
+                            <div class="pawn healer">
+                            </div>
+                            <p>
+                                Healer can target her allies instead of enemies. If she attacks her ally, the ally restores some hp.
+                                She can hit enemies too, but struggles to deal any damage to armored foes.
+                            </p>
+                        </div>
+                        <div class="pawn-card">
+                            <div class="pawn elf">
+                            </div>
+                            <p>
+                                Elf-mage can use powerfull spells to deal with hordes of enemies.
+                                When he has enough mp, his ranged attack become fireballs, dealing huge damage
+                                to all targets in 3x3 area centered on target. His melee attack becomes force push and teleports affected enemy to
+                                random cell (damage is calculated as if it was a basic ranged attack). He also negated some received damage with
+                                force shield.
+                                When Elf spends all his mp, he is quite weak.
+                            </p>
+                        </div>
+                        <div class="pawn-card">
+                            <div class="pawn amazon">
+                            </div>
+                            <p>
+                                Amazon is fast and furious warrior. She deals less damage than warrior, but inflicts it to all
+                                enemies around her.
+                                She also has great speed and initiative.
+                            </p>
+                        </div>
+                        <div class="pawn-card">
+                            <div class="pawn orc">
+                            </div>
+                            <p>
+                                Orc is unarmored and initially deals small damage. Howether he deals more damage with every hit he
+                                inflicts or receives, eventually reaching damage rating enough to one-shot any enemy.
+                                He also has a bit more health than other melee characters (except Troll).
+                            </p>
+                        </div>
+                        <div class="pawn-card">
+                            <div class="pawn goblin">
+                            </div>
+                            <p>
+                                Goblin is small and agile warrior. He has little armor and inflicts small damage, but can
+                                reach his target faster than any other class. He also has the best initiative, meaning he always does the first
+                                attack.
+                            </p>
+                        </div>
+                        <div class="pawn-card">
+                            <div class="pawn ghost">
+                            </div>
+                            <p>
+                                Ghost is a magical creature, requiring mp to exist. It spends mp to move and attack, and dies when no mp is left.
+                                It can also negate all damage with some chance (spending some mp). Its armor rating is good, and all other parameters
+                                are not bad either.
+                            </p>
+                        </div>
+                        <div class="pawn-card">
+                            <div class="pawn troll">
+                            </div>
+                            <p>
+                                Troll is the biggest and toughest of all characters. He regenerates some hp at start of his turn and has
+                                a lot of hp to begin with. He also has the best armor and damage.
+                                On the other hand he is very slow and often moves after all other characters, so ranged characters can
+                                kill him quite easily.
+                            </p>
+                        </div>
+                        <div class="pawn-card">
+                            <div class="pawn pirate">
+                            </div>
+                            <p>
+                                Pirate is ranged character with a very powerful attack. His pistol has less range than archer's bow,
+                                but deals a ton of damage. He has to reload after every shot, though, effectively skipping every other attack.
+                            </p>
+                        </div>
+                    </div>
+            </div>
+            <ul class="simple-menu">
+                <li class="simple-menu__item" data-nextstate="menu">Back to main</li>
+            </ul>
+        </div>
     </div>
     <div class="game" data-state="scores">
         <div class="score">
@@ -59,9 +179,6 @@
                 <li class="simple-menu__item" data-nextstate="menu">Back to main</li>
             </ul>
         </div>
-    </div>
-    <div class="game" data-state="pause">
-        Pause
     </div>
     <div class="game" data-state="finish-win">
         <p>You won!</p>
