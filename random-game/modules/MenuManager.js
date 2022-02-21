@@ -59,7 +59,7 @@ export default class MenuManager {
     }
 
     handleMute = () => {
-        console.log("Mute changed");
+        // console.log("Mute changed");
         if (this.settings.muted) {
             document.getElementById('menu-mute').classList.add('muted');
             this.soundPlayer.stopPlayback('menu-bgm');

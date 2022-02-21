@@ -36,8 +36,8 @@ export default class Ghost extends Pawn {
     }
 
     checkDeath () {
-        console.log("Check ghost death");
-        console.log(this.stats);
+        // console.log("Check ghost death");
+        // console.log(this.stats);
         if (this.stats.hp <= 0 || this.stats.mp <= 0) {
             console.log("Ghost is dying");
             this.specialStates.dying = true;
@@ -46,7 +46,7 @@ export default class Ghost extends Pawn {
     }
 
     async isDead () {
-        console.log("Checked ghost death");
+        // console.log("Checked ghost death");
         while (this.specialStates.dying)
             await promiseSetTimeout(() => this.specialStates.dying, 50);
         return this.stats.hp <= 0 || this.stats.mp <= 0;

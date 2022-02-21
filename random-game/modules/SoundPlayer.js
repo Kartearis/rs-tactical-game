@@ -45,7 +45,7 @@ export default class SoundPlayer {
     }
 
     stopPlayback = (label = null, config = {reset: true}) => {
-        console.log("Stop");
+        // console.log("Stop");
         if (label)
             this.sounds[label].forEach(sound => {
                 sound.pause();
