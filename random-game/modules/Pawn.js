@@ -80,7 +80,7 @@ export default class Pawn {
         this.soundPlayer.addSound('receiveDamageRanged', "./assets/game/sounds/cartoon_arrow.wav");
         this.soundPlayer.addSound('dealDamageMelee', "./assets/game/sounds/sword_stab.wav");
         this.soundPlayer.addSound('dealDamageRanged', "./assets/game/sounds/arrow_shoot.mp3");
-        this.soundPlayer.addSound('die', "./assets/game/sounds/body_drop_quick.mp3");
+        this.soundPlayer.addSound('die', "./assets/game/sounds/body_drop_quick.wav");
     }
 
     // Only left click is implemented currently. Handlers must accept event and thisobj as arguments.
@@ -130,7 +130,7 @@ export default class Pawn {
 
     die = async () => {
         // Animate death
-        this.soundPlayer.playSound('die');
+        await this.soundPlayer.promisedPlaySound('die');
         this.currentCell.pawn = null;
         this.pawnElement.remove();
     }
@@ -199,8 +199,8 @@ export default class Pawn {
             type = 'ranged';
         // Start animation if any
         if (type === 'melee')
-            this.soundPlayer.playSound('dealDamageMelee');
-        else this.soundPlayer.playSound('dealDamageRanged');
+            await this.soundPlayer.playSound('dealDamageMelee');
+        else await this.soundPlayer.playSound('dealDamageRanged');
         // Deal damage
         this.dealDamage(pawn, type);
     }

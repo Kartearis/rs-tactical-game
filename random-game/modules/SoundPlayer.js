@@ -10,6 +10,13 @@ export default class SoundPlayer {
         }
     }
 
+    promisedPlay = (audioObject) => {
+        return new Promise(resolve => {
+            audioObject.addEventListener('ended', resolve, {once: true});
+            audioObject.play();
+        });
+    }
+
     addSound = (label, path, config = {}) => {
         let newAudio = new Audio(path);
         if (config.loop === true)
@@ -27,6 +34,14 @@ export default class SoundPlayer {
         if (this.sounds[label])
             this.sounds[label].forEach(sound => sound.play());
         else console.log("Sound with label ", label, " is not set");
+    }
+
+    promisedPlaySound = async (label) => {
+        if (!this.sounds[label]) {
+            console.log("Sound with label ", label, " is not set");
+            return null;
+        }
+        return await Promise.all(this.sounds[label].map(sound => this.promisedPlay(sound)));
     }
 
     stopPlayback = (label = null, config = {reset: true}) => {
