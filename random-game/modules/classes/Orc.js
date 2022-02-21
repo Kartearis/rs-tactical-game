@@ -13,6 +13,16 @@ export default class Orc extends Pawn {
         this.pawnElement.classList.add("orc");
     }
 
+    dealDamage(targetPawn, attackType) {
+        super.dealDamage(targetPawn, attackType);
+        this.stats.dmgM = Math.floor(this.stats.dmgM * 1.3);
+    }
+
+    receiveDamage(damage, attackingPawn, attackType) {
+        super.receiveDamage(damage, attackingPawn, attackType);
+        this.stats.dmgM = Math.floor(this.stats.dmgM * 1.3);
+    }
+
     // constructor(pawnElement, currentCell, owner) {
     //     super(pawnElement, currentCell, owner);
     // }

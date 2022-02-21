@@ -4,6 +4,6 @@ export default {
   maxHp: 20,
   dmgM: 6,
   def: 0,
-  spd: 6,
+  spd: 5,
   init: 6
 };

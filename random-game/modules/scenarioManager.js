@@ -92,6 +92,22 @@ const scenarios = [
             {class: Troll, pos: [4, 4], owner: 'ai'},
         ]
     },
+    {
+        name: 'Mage massacre',
+        preset: [
+            {class: Elf, pos: [0, 0], owner: 'player'},
+            {class: Elf, pos: [0, 8], owner: 'player'},
+            {class: Goblin, pos: [8, 0], owner: 'ai'},
+            {class: Goblin, pos: [8, 1], owner: 'ai'},
+            {class: Goblin, pos: [8, 2], owner: 'ai'},
+            {class: Goblin, pos: [8, 3], owner: 'ai'},
+            {class: Goblin, pos: [8, 4], owner: 'ai'},
+            {class: Goblin, pos: [8, 5], owner: 'ai'},
+            {class: Goblin, pos: [8, 6], owner: 'ai'},
+            {class: Goblin, pos: [8, 7], owner: 'ai'},
+            {class: Goblin, pos: [8, 8], owner: 'ai'},
+        ]
+    },
 
 ];
 
@@ -100,7 +116,7 @@ export default class ScenarioManager {
     static getRandomScenario = () => {
         let choice = Math.floor(Math.random() * scenarios.length);
         return scenarios[choice];
-        // return scenarios[3];
+        // return scenarios[5];
     }
 
 }

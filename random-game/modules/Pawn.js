@@ -1,9 +1,6 @@
 
 import promiseSetTimeout from "./PromisedTimeout.js";
-
-function clamp (x, min, max) {
-    return Math.max(Math.min(x, max), min);
-}
+import {clamp} from "./smallThings.js";
 
 // Pawn is basic cell-placeable element. In this project it also implements basic character behaviour
 // Arrow methods behave as non-virtual, usual xxx(){} as virtual
@@ -46,7 +43,7 @@ export default class Pawn {
             'leftclick': [],
             'rightclick': [],
             'statchange': {
-                'hp': [this.updateHpInfo, this.checkDeath],
+                'hp': [this.updateHpInfo, () => this.checkDeath()],
                 'mp': [this.updateMpInfo]
             }
         };
@@ -109,7 +106,7 @@ export default class Pawn {
         this.pawnElement.style.setProperty('--current-mp', this.stats.mp / this.stats.maxMp * 100 + '%');
     }
 
-    checkDeath = () => {
+    checkDeath () {
         if (this.stats.hp <= 0) {
             this.specialStates.dying = true;
             this.die().then((isDead) => this.specialStates.dying = false);
@@ -123,7 +120,7 @@ export default class Pawn {
     }
 
     // Implements half-bysy wait for death animation to end
-    isDead = async () => {
+    async isDead () {
         while (this.specialStates.dying)
             await promiseSetTimeout(() => this.specialStates.dying, 50);
         return this.stats.hp <= 0;
@@ -151,20 +148,19 @@ export default class Pawn {
         this.pawnElement.classList.remove('active');
     }
 
-
     // Move pawn along route of cells
     move = async (path) => {
-        return await promiseSetTimeout(() => this.#moveStep(path, 0), this.animation.stepDelay);
+        return await promiseSetTimeout(() => this.moveStep(path, 0), this.animation.stepDelay);
     }
 
-    #moveStep = async (path, index) => {
-        this.#moveToCell(path[index]);
+    async moveStep (path, index) {
+        this.moveToCell(path[index]);
         if (path.length > index + 1)
-            return await promiseSetTimeout(() => this.#moveStep(path, index + 1), this.animation.stepDelay);
+            return await promiseSetTimeout(() => this.moveStep(path, index + 1), this.animation.stepDelay);
         return true;
     }
 
-    #moveToCell = cell => {
+    moveToCell = cell => {
         // Any animation may go here
         // Remove self ref from previous cell
         this.currentCell.pawn = null;
@@ -208,7 +204,7 @@ export default class Pawn {
             .filter(c => c.pawn !== null && c.pawn.owner !== this.owner).map(c => c.pawn);
         if (targetsInRange.length > 0) {
             // If can attack without moving - proceed
-            let target = this.#selectTarget(targetsInRange);
+            let target = this.selectTarget(targetsInRange);
             turnManager.attackPawnTo(target);
             return;
         }
@@ -219,7 +215,7 @@ export default class Pawn {
             .filter(c => c.pawn !== null && c.pawn.owner !== this.owner).map(c => c.pawn);
         if (targetsInRange.length > 0) {
             // If there is target, reachable after movement - proceed with movement and attacking
-            let target = this.#selectTargetOnMove(targetsInRange, field, this.stats.spd + this.stats.range);
+            let target = this.selectTargetOnMove(targetsInRange, field, this.stats.spd + this.stats.range);
             if (target !== null){
                 // If path is longer than spd, move spd cells. Else move to the end except last cell (that is target pawn)
                 let path = target.path.length > this.stats.spd ? target.path.slice(0, this.stats.spd) : target.path.slice(0, target.path.length - 1);
@@ -234,7 +230,7 @@ export default class Pawn {
             .filter(c => c.pawn !== null && c.pawn.owner !== this.owner).map(c => c.pawn);
         if (targetsInRange.length > 0) {
             // If there is target to which it is possible to move - proceed with movement (first spd cells of path)
-            let target = this.#selectTargetOnMove(targetsInRange, field, 9);
+            let target = this.selectTargetOnMove(targetsInRange, field, 9);
             // console.log(target);
             if (target !== null) {
                 // If path is longer than spd, move spd cells. Else move to the end except last cell (that is target pawn)
@@ -254,14 +250,14 @@ export default class Pawn {
             .filter(c => c.pawn !== null && c.pawn.owner !== this.owner).map(c => c.pawn);
         if (targetsInRange.length > 0) {
             // If can attack something - proceed
-            let target = this.#selectTarget(targetsInRange);
+            let target = this.selectTarget(targetsInRange);
             turnManager.attackPawnTo(target);
             return;
         }
         turnManager.endTurn();
     }
 
-    #selectTarget(targets) {
+    selectTarget(targets) {
         // Select target with the least hp. Targets must have at least one element
         let selected = targets[0];
         for (let target of targets)
@@ -270,7 +266,7 @@ export default class Pawn {
         return selected;
     }
 
-    #selectTargetOnMove(targets, field, range) {
+    selectTargetOnMove(targets, field, range) {
         // Select target based on its rating and passability. Targets must have at least one element
         let selected = null;
         for (let target of targets) {

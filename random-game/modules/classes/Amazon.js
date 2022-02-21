@@ -12,6 +12,11 @@ export default class Amazon extends Pawn {
         this.pawnElement.classList.add("amazon");
     }
 
+    dealDamage(targetPawn, attackType) {
+        let adjacentEnemies = this.currentCell.getAdjacent().filter(c => c.pawn !== null && c.pawn.owner !== this.owner).map(c => c.pawn);
+        adjacentEnemies.forEach(enemy => super.dealDamage(enemy, attackType));
+    }
+
     // constructor(pawnElement, currentCell, owner) {
     //     super(pawnElement, currentCell, owner);
     // }
