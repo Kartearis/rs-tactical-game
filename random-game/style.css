@@ -207,30 +207,23 @@ body {
 }
 
 .custom-icons.brand {
-    --icon-path: url("./assets/svg/logo_unsplash.svg");
+    --icon-path: url("./assets/svg/noun-sword-fighting-2054626.svg");
 }
 
-.custom-icons.search {
-    --icon-path: url("./assets/svg/search.svg");
+.custom-icons.volume {
+    --icon-path: url("./assets/svg/volume.svg");
 }
 
-.custom-icons.github {
-    --icon-path: url("./assets/svg/icons8-github.svg");
+.custom-icons.volume.muted {
+    --icon-path: url("./assets/svg/mute.svg");
 }
 
-.custom-icons.server-error {
-    --icon-path: url("./assets/svg/error-message.svg");
-    display: block;
-    width: 300px;
-    height: 300px;
-    margin-left: auto;
-    margin-right: auto;
-}
 
 .custom-icons.clickable:hover {
     transition: 0.3s;
     cursor: pointer;
-    background-color: #efd6ac;
+    transform: scale(1.3);
+    background-color: goldenrod;
 }
 
 .logo-container {

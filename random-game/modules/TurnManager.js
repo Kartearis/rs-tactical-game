@@ -128,13 +128,18 @@ export default class TurnManager {
     }
 
     endGame() {
+        this.menuManager.stopBattleBGM();
         if (this.state.winner === 'player')
         {
             document.getElementById('score').innerText = this.calculateScore('player').toString();
             document.getElementById('mapname').innerText = this.state.map;
+            this.menuManager.playVictorySound();
             this.menuManager.changeState('finish-win');
         }
-        else this.menuManager.changeState('finish-lose');
+        else {
+            this.menuManager.playFailureSound();
+            this.menuManager.changeState('finish-lose');
+        }
     }
 
     calculateScore(owner) {

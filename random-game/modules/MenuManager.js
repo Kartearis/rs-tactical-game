@@ -33,25 +33,45 @@ export default class MenuManager {
         this.initializeSounds();
         this.collectPossibleStates();
         this.initializeStateSwitchers();
+        this.initializeShortcutToMain();
     }
 
     initializeSounds = () => {
-        this.soundPlayer.addSound('menu-click', "./assets/game/sounds/Weapon_Impact_Parry_01.wav");
-        this.soundPlayer.addSound('menu-bgm', "./assets/game/bgm/Main_menu_theme.mp3");
-        this.soundPlayer.addSound('battle-bgm', "./assets/game/bgm/Battle_bgm.mp3");
+        this.soundPlayer.addSound('menu-click', "./assets/game/sounds/Weapon_Impact_Parry_01.wav", {offset: 0.1});
+        this.soundPlayer.addSound('menu-bgm', "./assets/game/bgm/Main_menu_theme.mp3", {loop: true});
+        this.soundPlayer.addSound('battle-bgm', "./assets/game/bgm/Battle_bgm.mp3", {loop: true});
+        this.soundPlayer.addSound('victory', "./assets/game/sounds/victory.wav");
+        this.soundPlayer.addSound('fail', "./assets/game/sounds/failure.wav");
         this.addStateHandler('battle', this.stopMenuBGM);
         this.addStateHandler('battle', this.playBattleBGM);
         this.addStateHandler('menu', this.playMenuBGM);
+        this.addStateHandler('menu', this.stopBattleBGM);
+        this.addStateHandler('menu', this.stopVictorySound);
+        this.addStateHandler('menu', this.stopFailureSound);
         document.getElementById('menu-mute').addEventListener('click',() => this.settings.muted = !this.settings.muted);
+    }
+
+    initializeShortcutToMain = () => {
+        document.querySelector(".brand-block").addEventListener('click', () => {
+            this.playMenuClick();
+            this.changeState('menu');
+        })
     }
 
     handleMute = () => {
         console.log("Mute changed");
-        if (this.settings.muted)
+        if (this.settings.muted) {
+            document.getElementById('menu-mute').classList.add('muted');
             this.soundPlayer.stopPlayback('menu-bgm');
-        else this.soundPlayer.playSound('menu-bgm');
+        }
+        else {
+            this.soundPlayer.playSound('menu-bgm');
+            document.getElementById('menu-mute').classList.remove('muted');
+        }
     }
 
+
+    // TODO: Implement actions such as mute|unmute as actions, which could also be set up with data-action attributes
     changeState = state => {
         if (!this.possibleStates.includes(state))
             throw new Error("Exception trying to switch to impossible state " + state);
@@ -85,6 +105,7 @@ export default class MenuManager {
             this.playMenuClick();
         }));
 
+    // All sound methods should actually be separated from menu, but no time is left
     playMenuClick = () => {
         this.soundPlayer.playSound('menu-click');
     }
@@ -104,5 +125,21 @@ export default class MenuManager {
 
     stopBattleBGM = () => {
         this.soundPlayer.stopPlayback('battle-bgm');
+    }
+
+    playVictorySound = () => {
+        this.soundPlayer.playSound('victory');
+    }
+
+    stopVictorySound = () => {
+        this.soundPlayer.stopPlayback('victory');
+    }
+
+    playFailureSound = () => {
+        this.soundPlayer.playSound('fail');
+    }
+
+    stopFailureSound = () => {
+        this.soundPlayer.stopPlayback('fail');
     }
 }
