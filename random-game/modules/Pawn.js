@@ -55,6 +55,7 @@ export default class Pawn {
         this.soundPlayer = new SoundPlayer();
         this.customizeForClass();
         this.initializePawn();
+        this.initializeSounds();
         this.addHandlersToStatChange();
     }
 
@@ -69,6 +70,17 @@ export default class Pawn {
             this.pawnElement.style.setProperty('--divider', 2);
         this.updateHpInfo();
         this.updateMpInfo();
+    }
+
+    initializeSounds(){
+        this.soundPlayer.addSound('step', "./assets/game/sounds/leaf_step.wav");
+        this.soundPlayer.addSound('receiveDamageMelee', "./assets/game/sounds/grunt.wav");
+        this.soundPlayer.addSound('blockDamage', "./assets/game/sounds/chainmail_block.wav");
+        this.soundPlayer.addSound('receiveDamageRanged', "./assets/game/sounds/grunt.wav");
+        this.soundPlayer.addSound('receiveDamageRanged', "./assets/game/sounds/cartoon_arrow.wav");
+        this.soundPlayer.addSound('dealDamageMelee', "./assets/game/sounds/sword_stab.wav");
+        this.soundPlayer.addSound('dealDamageRanged', "./assets/game/sounds/arrow_shoot.mp3");
+        this.soundPlayer.addSound('die', "./assets/game/sounds/body_drop_quick.mp3");
     }
 
     // Only left click is implemented currently. Handlers must accept event and thisobj as arguments.
@@ -118,6 +130,7 @@ export default class Pawn {
 
     die = async () => {
         // Animate death
+        this.soundPlayer.playSound('die');
         this.currentCell.pawn = null;
         this.pawnElement.remove();
     }
@@ -157,6 +170,7 @@ export default class Pawn {
     }
 
     async moveStep (path, index) {
+        this.soundPlayer.playSound('step');
         this.moveToCell(path[index]);
         if (path.length > index + 1)
             return await promiseSetTimeout(() => this.moveStep(path, index + 1), this.animation.stepDelay);
@@ -184,6 +198,9 @@ export default class Pawn {
             || Math.abs(pawn.currentCell.posY - this.currentCell.posY) > 1)
             type = 'ranged';
         // Start animation if any
+        if (type === 'melee')
+            this.soundPlayer.playSound('dealDamageMelee');
+        else this.soundPlayer.playSound('dealDamageRanged');
         // Deal damage
         this.dealDamage(pawn, type);
     }
@@ -195,6 +212,13 @@ export default class Pawn {
 
     receiveDamage(damage, attackingPawn, attackType) {
         let reducedDamage = clamp(damage - Math.round((0.75 + Math.random() / 2) * this.stats.def), 0, Infinity);
+        if (reducedDamage > 0) {
+            if (attackType === 'melee')
+                this.soundPlayer.playSound('receiveDamageMelee');
+            else this.soundPlayer.playSound('receiveDamageRanged');
+        }
+        else this.soundPlayer.playSound('blockDamage');
+
         this.stats.hp -= reducedDamage;
     }
 

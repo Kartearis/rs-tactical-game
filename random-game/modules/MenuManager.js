@@ -38,10 +38,10 @@ export default class MenuManager {
 
     initializeSounds = () => {
         this.soundPlayer.addSound('menu-click', "./assets/game/sounds/Weapon_Impact_Parry_01.wav", {offset: 0.1});
-        this.soundPlayer.addSound('menu-bgm', "./assets/game/bgm/Main_menu_theme.mp3", {loop: true});
-        this.soundPlayer.addSound('battle-bgm', "./assets/game/bgm/Battle_bgm.mp3", {loop: true});
-        this.soundPlayer.addSound('victory', "./assets/game/sounds/victory.wav");
-        this.soundPlayer.addSound('fail', "./assets/game/sounds/failure.wav");
+        this.soundPlayer.addSound('menu-bgm', "./assets/game/bgm/Main_menu_theme.mp3", {loop: true, volume: 0.4});
+        this.soundPlayer.addSound('battle-bgm', "./assets/game/bgm/Battle_bgm.mp3", {loop: true, volume: 0.4});
+        this.soundPlayer.addSound('victory', "./assets/game/sounds/victory.wav", {volume: 0.5});
+        this.soundPlayer.addSound('fail', "./assets/game/sounds/failure.wav", {volume: 0.5});
         this.addStateHandler('battle', this.stopMenuBGM);
         this.addStateHandler('battle', this.playBattleBGM);
         this.addStateHandler('menu', this.playMenuBGM);

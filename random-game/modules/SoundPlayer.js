@@ -10,24 +10,25 @@ export default class SoundPlayer {
         }
     }
 
-    // TODO: Add config argument.
-    // Possible settings: start point, loop
     addSound = (label, path, config = {}) => {
         let newAudio = new Audio(path);
         if (config.loop === true)
             newAudio.loop = true;
         if (config.offset)
             newAudio.currentTime = config.offset;
+        if (config.volume)
+            newAudio.volume = config.volume;
         if (this.sounds[label] !== undefined)
             this.sounds[label].push(newAudio);
         else this.sounds[label] = [newAudio];
     }
 
     playSound = (label) => {
-        this.sounds[label].forEach(sound => sound.play());
+        if (this.sounds[label])
+            this.sounds[label].forEach(sound => sound.play());
+        else console.log("Sound with label ", label, " is not set");
     }
 
-    // TODO: add config so that it is possible to pause without resetting
     stopPlayback = (label = null, config = {reset: true}) => {
         console.log("Stop");
         if (label)
