@@ -1,6 +1,10 @@
 
 import promiseSetTimeout from "./PromisedTimeout.js";
 
+function clamp (x, min, max) {
+    return Math.max(Math.min(x, max), min);
+}
+
 // Pawn is basic cell-placeable element. In this project it also implements basic character behaviour
 // Arrow methods behave as non-virtual, usual xxx(){} as virtual
 export default class Pawn {
@@ -186,12 +190,12 @@ export default class Pawn {
     }
 
     dealDamage(targetPawn, attackType) {
-        let damage = (attackType === 'ranged' ? this.stats.dmgR : this.stats.dmgM) * (0.75 + Math.random() / 2);
+        let damage = clamp((attackType === 'ranged' ? this.stats.dmgR : this.stats.dmgM) * (0.75 + Math.random() / 2), 0, Infinity);
         targetPawn.receiveDamage(Math.floor(damage), this, attackType);
     }
 
     receiveDamage(damage, attackingPawn, attackType) {
-        let reducedDamage = damage - Math.round((0.75 + Math.random() / 2) * this.stats.def);
+        let reducedDamage = clamp(damage - Math.round((0.75 + Math.random() / 2) * this.stats.def), 0, Infinity);
         this.stats.hp -= reducedDamage;
     }
 

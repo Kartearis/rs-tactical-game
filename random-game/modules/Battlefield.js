@@ -171,7 +171,7 @@ export default class Battlefield {
         //TODO: As optimisation, can use previously calculated distances, if they are not tainted.
         // WARNING! For pathfinding after showing movement cells it is tainted, because wideSearch with attack range was also used
         //Calculate distances
-        console.log(start, finish);
+        // console.log(start, finish);
         this.wideSearch(start, range !== null ? range : pawn.stats.spd);
         // Find path
         let path = [];
