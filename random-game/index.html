@@ -181,19 +181,23 @@
         </div>
     </div>
     <div class="game" data-state="finish-win">
-        <p>You won!</p>
-        <p>Score: <span id="score">0</span> on map <span id="mapname">-</span></p>
-        <ul class="simple-menu">
-            <li class="simple-menu__item" data-nextstate="menu">Main menu</li>
-            <li class="simple-menu__item" data-nextstate="scores">Highscores</li>
-        </ul>
+        <div class="result-screen">
+            <h2>You won!</h2>
+            <p>Score: <span id="score">0</span> on map <span id="mapname">-</span></p>
+            <ul class="simple-menu">
+                <li class="simple-menu__item" data-nextstate="menu">Main menu</li>
+                <li class="simple-menu__item" data-nextstate="scores">Highscores</li>
+            </ul>
+        </div>
     </div>
     <div class="game" data-state="finish-lose">
-        You lost!
-        <ul class="simple-menu">
-            <li class="simple-menu__item" data-nextstate="menu">Main menu</li>
-            <li class="simple-menu__item" data-nextstate="scores">Highscores</li>
-        </ul>
+        <div class="result-screen">
+            <h2>You lost!</h2>
+            <ul class="simple-menu">
+                <li class="simple-menu__item" data-nextstate="menu">Main menu</li>
+                <li class="simple-menu__item" data-nextstate="scores">Highscores</li>
+            </ul>
+        </div>
     </div>
 </main>
 <footer>

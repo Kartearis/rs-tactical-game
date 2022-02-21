@@ -83,6 +83,23 @@
     text-shadow: 0 0 5px goldenrod;
 }
 
+.game .result-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.result-screen p {
+    font-size: 26px;
+}
+
+.result-screen h2 {
+    font-size: 60px;
+}
+
 .pawn-gallery {
     display: flex;
     flex-direction: row;
