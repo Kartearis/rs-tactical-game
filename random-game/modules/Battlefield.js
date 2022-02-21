@@ -37,16 +37,16 @@ class Cell {
 
     getAdjacent = () => {
         let adjacent = [];
+        if (this.posY > 0)
+            adjacent.push(this.battlefield.grid[this.posX][this.posY - 1]);
+        if (this.posY < this.battlefield.grid[0].length - 1)
+            adjacent.push(this.battlefield.grid[this.posX][this.posY + 1]);
         if (this.posX > 0) {
             adjacent.push(this.battlefield.grid[this.posX - 1][this.posY]);
-            if (this.posY > 0) {
+            if (this.posY > 0)
                 adjacent.push(this.battlefield.grid[this.posX - 1][this.posY - 1]);
-                adjacent.push(this.battlefield.grid[this.posX][this.posY - 1]);
-            }
-            if (this.posY < this.battlefield.grid[0].length - 1) {
+            if (this.posY < this.battlefield.grid[0].length - 1)
                 adjacent.push(this.battlefield.grid[this.posX - 1][this.posY + 1]);
-                adjacent.push(this.battlefield.grid[this.posX][this.posY + 1]);
-            }
         }
         if (this.posX < this.battlefield.grid.length - 1) {
             adjacent.push(this.battlefield.grid[this.posX + 1][this.posY]);
@@ -145,7 +145,6 @@ export default class Battlefield {
         this.grid.flat().forEach(c => c.removeOverlays());
     }
 
-    // TODO: Do not use cells with pawn for pf
     wideSearch(cell, range, ignoreInhabited = true) {
         this.resetCellsPF();
         let queue = [cell];
@@ -162,29 +161,41 @@ export default class Battlefield {
                 }
             });
         }
+        this.grid.flat().filter(el => el.pathfindingDistance > 0 && el.pathfindingDistance <= range)
+            .forEach(c => c.cellElement.dataset['pf'] = c.pathfindingDistance);
         return this.grid.flat().filter(el => el.pathfindingDistance > 0 && el.pathfindingDistance <= range);
     }
 
-    //Find any suitable path. Range is used to cull far-placed cells
-    // TODO: Do not use cells with pawn for pf
-    findPath(start, finish, pawn) {
-        //TODO: As optimisation, can use previously calculated distances, if they are not tainted
+    //Find any suitable path. Range is used to cull far-placed cells. Path cannot contain pawned cells
+    findPath(start, finish, pawn, range = null) {
+        //TODO: As optimisation, can use previously calculated distances, if they are not tainted.
+        // WARNING! For pathfinding after showing movement cells it is tainted, because wideSearch with attack range was also used
         //Calculate distances
-        this.wideSearch(start, pawn.stats.spd);
+        console.log(start, finish);
+        this.wideSearch(start, range !== null ? range : pawn.stats.spd);
         // Find path
         let path = [];
         let current = finish;
+        // Ad hoc fix for finding path to cell with pawn. Set current pathfinding distance to minimal of adjacent + 1
+        if (current.pathfindingDistance === -1)
+            current.pathfindingDistance = current.getAdjacent()
+                .reduce((s, x) => s > x.pathfindingDistance && x.pathfindingDistance !== -1 ? x.pathfindingDistance : s, 100) + 1;
         while (current !== start)
         {
             path.unshift(current);
             let adjacent = current.getAdjacent();
-            current = adjacent.find(c => c.pathfindingDistance === current.pathfindingDistance - 1);
+            // console.log("Adjacent:");
+            current = adjacent.find(c => c === start || (c.pawn === null && c.pathfindingDistance === current.pathfindingDistance - 1));
+            if (current === undefined)
+                return null;
         }
         return path;
     }
 
     resetCellsPF() {
+        // console.log("PF RESET");
         this.grid.forEach(row => row.forEach(cell => cell.pathfindingDistance = -1));
+        // this.grid.forEach(row => row.forEach(cell => cell.cellElement.dataset['pf'] = ""));
     }
 
     reset() {

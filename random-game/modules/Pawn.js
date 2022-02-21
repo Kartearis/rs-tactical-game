@@ -195,5 +195,90 @@ export default class Pawn {
         this.stats.hp -= reducedDamage;
     }
 
+    // Current ai implementation is vastly ineffective, paths are calculated several times per turn
+    async processTurnMove(turnManager) {
+        // console.log("Processing movement");
+        let field = this.currentCell.battlefield;
+        // Check targets in range (get all cells with pawns within range)
+        let targetsInRange = field.wideSearch(this.currentCell, this.stats.range, false)
+            .filter(c => c.pawn !== null && c.pawn.owner !== this.owner).map(c => c.pawn);
+        if (targetsInRange.length > 0) {
+            // If can attack without moving - proceed
+            let target = this.#selectTarget(targetsInRange);
+            turnManager.attackPawnTo(target);
+            return;
+        }
+        // console.log("No targets - trying to move");
+        // If no targets in range - check targets in move range + range
+        // Warning! targetsInRange may contain unreachable targets (within radius). Should eliminate them on selection
+        targetsInRange = field.wideSearch(this.currentCell, this.stats.spd + this.stats.range, false)
+            .filter(c => c.pawn !== null && c.pawn.owner !== this.owner).map(c => c.pawn);
+        if (targetsInRange.length > 0) {
+            // If there is target, reachable after movement - proceed with movement and attacking
+            let target = this.#selectTargetOnMove(targetsInRange, field, this.stats.spd + this.stats.range);
+            if (target !== null){
+                // If path is longer than spd, move spd cells. Else move to the end except last cell (that is target pawn)
+                let path = target.path.length > this.stats.spd ? target.path.slice(0, this.stats.spd) : target.path.slice(0, target.path.length - 1);
+                turnManager.movePawnTo(path[path.length - 1]);
+                return;
+            }
+            // Else try last if
+        }
+        // console.log("Cannot reach this turn");
+        // If there is no such target - scan all map for targets
+        targetsInRange = field.wideSearch(this.currentCell, 9, false)
+            .filter(c => c.pawn !== null && c.pawn.owner !== this.owner).map(c => c.pawn);
+        if (targetsInRange.length > 0) {
+            // If there is target to which it is possible to move - proceed with movement (first spd cells of path)
+            let target = this.#selectTargetOnMove(targetsInRange, field, 9);
+            // console.log(target);
+            if (target !== null) {
+                // If path is longer than spd, move spd cells. Else move to the end except last cell (that is target pawn)
+                let path = target.path.length > this.stats.spd ? target.path.slice(0, this.stats.spd) : target.path.slice(0, target.path.length - 1);
+                turnManager.movePawnTo(path[path.length - 1]);
+                return;
+            }
+        }
+        // Else end turn
+        turnManager.endTurn();
+    }
+
+    processTurnAttack(turnManager) {
+        let field = this.currentCell.battlefield;
+        // Check targets in range (get all cells with pawns within range)
+        let targetsInRange = field.wideSearch(this.currentCell, this.stats.range, false)
+            .filter(c => c.pawn !== null && c.pawn.owner !== this.owner).map(c => c.pawn);
+        if (targetsInRange.length > 0) {
+            // If can attack something - proceed
+            let target = this.#selectTarget(targetsInRange);
+            turnManager.attackPawnTo(target);
+            return;
+        }
+        turnManager.endTurn();
+    }
+
+    #selectTarget(targets) {
+        // Select target with the least hp. Targets must have at least one element
+        let selected = targets[0];
+        for (let target of targets)
+            if (target.stats.hp < selected.stats.hp)
+                selected = target;
+        return selected;
+    }
+
+    #selectTargetOnMove(targets, field, range) {
+        // Select target based on its rating and passability. Targets must have at least one element
+        let selected = null;
+        for (let target of targets) {
+            let path = field.findPath(this.currentCell, target.currentCell, this, range);
+            if (path === null) continue;
+            let rating = target.stats.hp * 2 + path.length * 10;
+            // console.log(rating);
+            if (selected === null || selected.rating > rating)
+                selected = {rating: rating, target: target, path: path};
+        }
+        return selected === null ? null : selected;
+    }
+
 
 }

@@ -58,6 +58,11 @@ export default class TurnManager {
         this.state.currentPawn.showActive();
         this.state.currentState = 'move-phase';
         this.state.nextPawnIndex++;
+        // If pawn is ai-controlled, let it process its turn
+        if (this.state.currentPawn.owner !== 'player') {
+            this.state.currentPawn.processTurnMove(this);
+            return;
+        }
         let movementCells = this.battlefield.showMovement(this.state.currentPawn, this);
         if (movementCells.length === 0)
             this.startAttackPhase();
@@ -81,6 +86,10 @@ export default class TurnManager {
 
     startAttackPhase () {
         this.state.currentState = 'attack-phase';
+        if (this.state.currentPawn.owner !== 'player') {
+            this.state.currentPawn.processTurnAttack(this);
+            return;
+        }
         let targets = this.battlefield.showPossibleAttacks(this.state.currentPawn, this);
         if (targets.length === 0)
             this.endTurn();
@@ -132,7 +141,7 @@ export default class TurnManager {
         // Score is calculated based on remaining pawns, their remaining hp and used rounds.
         let remainingPawns = this.state.order.filter(p => p.owner === owner);
         let score = remainingPawns.length * 1000;
-        score += remainingPawns.reduce((s, p) => s += Math.floor(p.stats.hp / p.stats.maxHp * 500), 0);
+        score += remainingPawns.reduce((s, p) => s + Math.floor(p.stats.hp / p.stats.maxHp * 500), 0);
         score += 1 / Math.sqrt(this.state.roundCount) * 5000;
         return score;
     }
