@@ -39,13 +39,15 @@ export default class MenuManager {
         this.soundPlayer.addSound('menu-click', "./assets/game/sounds/Weapon_Impact_Parry_01.wav");
         this.soundPlayer.addSound('menu-bgm', "./assets/game/bgm/Main_menu_theme.mp3");
         this.soundPlayer.addSound('battle-bgm', "./assets/game/bgm/Battle_bgm.mp3");
+        this.addStateHandler('battle', this.stopMenuBGM);
         this.addStateHandler('battle', this.playBattleBGM);
+        this.addStateHandler('menu', this.playMenuBGM);
         document.getElementById('menu-mute').addEventListener('click',() => this.settings.muted = !this.settings.muted);
     }
 
     handleMute = () => {
         console.log("Mute changed");
-        if (this.settings.mute)
+        if (this.settings.muted)
             this.soundPlayer.stopPlayback('menu-bgm');
         else this.soundPlayer.playSound('menu-bgm');
     }
@@ -88,10 +90,19 @@ export default class MenuManager {
     }
 
     playMenuBGM = () => {
-        this.soundPlayer.playSound('menu-bgm');
+        if (!this.settings.muted)
+            this.soundPlayer.playSound('menu-bgm');
+    }
+
+    stopMenuBGM = () => {
+        this.soundPlayer.stopPlayback('menu-bgm');
     }
 
     playBattleBGM = () => {
         this.soundPlayer.playSound('battle-bgm');
+    }
+
+    stopBattleBGM = () => {
+        this.soundPlayer.stopPlayback('battle-bgm');
     }
 }
