@@ -1,5 +1,6 @@
 
 import promiseSetTimeout from "./PromisedTimeout.js";
+import SoundPlayer from "./SoundPlayer.js";
 import {clamp} from "./smallThings.js";
 
 // Pawn is basic cell-placeable element. In this project it also implements basic character behaviour
@@ -10,6 +11,7 @@ export default class Pawn {
     currentCell = null;
     handlers = null;
     animation = null;
+    soundPlayer = null;
 
     stats = null;
     skills = null;
@@ -50,6 +52,7 @@ export default class Pawn {
         this.animation = {
             stepDelay: 200
         };
+        this.soundPlayer = new SoundPlayer();
         this.customizeForClass();
         this.initializePawn();
         this.addHandlersToStatChange();
