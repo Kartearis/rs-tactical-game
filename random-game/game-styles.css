@@ -13,6 +13,31 @@
     display: block;
 }
 
+.game .score {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.score-table{
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.score-table thead tr {
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(63,63,76,1) 100%);
+    color: #F8F6F1;
+}
+
+.score-table td {
+
+    border: 2px solid black;
+}
+
 .simple-menu {
     list-style: none;
     padding: 0;

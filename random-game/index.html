@@ -10,7 +10,9 @@
           rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./game-styles.css">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg">
     <link rel="icon" href="assets/favicon/favicon.png">
+
     <title>Random game</title>
 </head>
 <body>
@@ -39,7 +41,24 @@
         Manual
     </div>
     <div class="game" data-state="scores">
-        Scores
+        <div class="score">
+            <h2>High scores</h2>
+            <table class="score-table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Map</th>
+                    <th>Score</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody id="scores-container">
+                </tbody>
+            </table>
+            <ul class="simple-menu">
+                <li class="simple-menu__item" data-nextstate="menu">Back to main</li>
+            </ul>
+        </div>
     </div>
     <div class="game" data-state="pause">
         Pause

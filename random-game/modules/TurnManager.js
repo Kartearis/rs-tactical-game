@@ -24,11 +24,13 @@ export default class TurnManager {
     turnEndDelay = 1000;
     battlefield = null;
     menuManager = null;
+    scoreManager = null;
 
-    constructor(battlefield, menuManager) {
+    constructor(battlefield, menuManager, scoreManager) {
         self = this;
         this.battlefield = battlefield;
         this.menuManager = menuManager;
+        this.scoreManager = scoreManager;
         this.state = new Proxy(this.state, {
             set: (target, property, value) => {
                 target[property] = value;
@@ -131,10 +133,15 @@ export default class TurnManager {
         this.menuManager.stopBattleBGM();
         if (this.state.winner === 'player')
         {
-            document.getElementById('score').innerText = this.calculateScore('player').toString();
+            let _score = this.calculateScore('player').toString();
+            document.getElementById('score').innerText = _score;
             document.getElementById('mapname').innerText = this.state.map;
             this.menuManager.playVictorySound();
             this.menuManager.changeState('finish-win');
+            this.scoreManager.addRecord({
+                map: this.state.map,
+                score: _score
+            });
         }
         else {
             this.menuManager.playFailureSound();
