@@ -30,4 +30,5 @@ window.addEventListener('DOMContentLoaded', () => {
     scoreManager = new ScoreManager(document.getElementById('scores-container'), '9d9e8788-1a87-4b68-9581-bd67fc4d8ac4' + '::HighScores');
     turnManager = new TurnManager(field, manager, scoreManager);
     manager.addStateHandler('battle', turnManager.startNewGame);
+    manager.addStateHandler('menu', turnManager.halt);
 });

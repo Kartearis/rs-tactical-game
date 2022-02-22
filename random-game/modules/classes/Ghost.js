@@ -39,7 +39,7 @@ export default class Ghost extends Pawn {
         // console.log("Check ghost death");
         // console.log(this.stats);
         if (this.stats.hp <= 0 || this.stats.mp <= 0) {
-            console.log("Ghost is dying");
+            // console.log("Ghost is dying");
             this.specialStates.dying = true;
             this.die().then((isDead) => this.specialStates.dying = false);
         }

@@ -197,12 +197,12 @@
 
 .cell.targetable {
     z-index: 10;
+    --target-color: crimson;
 }
 
 .cell.targetable::after {
     content: "";
     position: absolute;
-    --target-color: crimson;
     opacity: 0.6;
     width: calc(100% + 5px);
     height: calc(100% + 5px);

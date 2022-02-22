@@ -17,6 +17,7 @@ export default class Pawn {
     skills = null;
     tags = null;
     owner = null;
+    canTargetAllies = false;
 
     specialStates = null;
 
@@ -53,9 +54,9 @@ export default class Pawn {
             stepDelay: 200
         };
         this.soundPlayer = new SoundPlayer();
+        this.initializeSounds();
         this.customizeForClass();
         this.initializePawn();
-        this.initializeSounds();
         this.addHandlersToStatChange();
     }
 
@@ -73,13 +74,13 @@ export default class Pawn {
     }
 
     initializeSounds(){
-        this.soundPlayer.addSound('step', "./assets/game/sounds/leaf_step.wav");
+        this.soundPlayer.addSound('step', "./assets/game/sounds/leaf_step.wav", {offset: 0.1});
         this.soundPlayer.addSound('receiveDamageMelee', "./assets/game/sounds/grunt.wav");
         this.soundPlayer.addSound('blockDamage', "./assets/game/sounds/chainmail_block.wav");
         this.soundPlayer.addSound('receiveDamageRanged', "./assets/game/sounds/grunt.wav");
-        this.soundPlayer.addSound('receiveDamageRanged', "./assets/game/sounds/cartoon_arrow.wav");
         this.soundPlayer.addSound('dealDamageMelee', "./assets/game/sounds/sword_stab.wav");
         this.soundPlayer.addSound('dealDamageRanged', "./assets/game/sounds/arrow_shoot.mp3");
+        this.soundPlayer.addSound('dealDamageRanged', "./assets/game/sounds/cartoon_arrow.wav");
         this.soundPlayer.addSound('die', "./assets/game/sounds/body_drop_quick.wav");
     }
 
@@ -145,8 +146,8 @@ export default class Pawn {
     // More game-related methods below
 
     showTarget = (attackingPawn) => {
-        this.pawnElement.style.setProperty('--target-color', attackingPawn.owner === this.owner ? 'green' : 'crimson');
-        this.currentCell.cellElement.style.setProperty('--target-color', attackingPawn.owner === this.owner ? 'green' : 'crimson');
+        this.pawnElement.style.setProperty('--target-color', attackingPawn.owner === this.owner ? 'lightcyan' : 'crimson');
+        this.currentCell.cellElement.style.setProperty('--target-color', attackingPawn.owner === this.owner ? 'lightcyan' : 'crimson');
         this.currentCell.cellElement.classList.add('targetable');
         this.pawnElement.classList.add('targetable');
     }
@@ -191,7 +192,7 @@ export default class Pawn {
     }
 
     // Attack given pawn
-    attack = async (pawn) => {
+    async attack (pawn) {
         // Determine if attack is melee or ranged
         let type = 'melee';
         if (Math.abs(pawn.currentCell.posX - this.currentCell.posX) > 1
@@ -223,6 +224,7 @@ export default class Pawn {
     }
 
     // Current ai implementation is vastly ineffective, paths are calculated several times per turn
+    // Also with this behaviour healer will only attack and never heal
     async processTurnMove(turnManager) {
         // console.log("Processing movement");
         let field = this.currentCell.battlefield;
@@ -306,6 +308,4 @@ export default class Pawn {
         }
         return selected === null ? null : selected;
     }
-
-
 }

@@ -3,6 +3,7 @@ import promiseSetTimeout from "./PromisedTimeout.js";
 
 import ScenarioManager from "./scenarioManager.js";
 // Turn consists of two phases: movement then attack. Attack can be made instead of movement, but it ends turn.
+// TODO: remake halt guard as decorator
 export default class TurnManager {
 
     state = {
@@ -50,6 +51,9 @@ export default class TurnManager {
     }
 
     startNextTurn () {
+        if (this.state.currentState === 'halt')
+            return;
+        console.log("Next turn started");
         if (!this.state.order) throw new Error("Order is not defined yet!");
         if (this.state.nextPawnIndex >= this.state.order.length)
         {
@@ -72,6 +76,8 @@ export default class TurnManager {
     }
 
     async movePawnTo (cell) {
+        if (this.state.currentState === 'halt')
+            return;
         this.battlefield.hideCellOverlays();
         let path = this.battlefield.findPath(this.state.currentPawn.currentCell, cell, this.state.currentPawn);
         await this.state.currentPawn.move(path);
@@ -81,12 +87,16 @@ export default class TurnManager {
     // Attack given pawn with current pawn
     // Current implementation does not allow other pawns to intervene in any way
     async attackPawnTo (pawn) {
+        if (this.state.currentState === 'halt')
+            return;
         this.battlefield.hideCellOverlays();
         await this.state.currentPawn.attack(pawn);
         this.endTurn();
     }
 
     startAttackPhase () {
+        if (this.state.currentState === 'halt')
+            return;
         this.state.currentState = 'attack-phase';
         if (this.state.currentPawn.owner !== 'player') {
             this.state.currentPawn.processTurnAttack(this);
@@ -98,6 +108,8 @@ export default class TurnManager {
     }
 
     async endTurn () {
+        if (this.state.currentState === 'halt')
+            return;
         this.state.currentState = 'end-phase';
         this.state.currentPawn.hideActive();
         let deadStates = await Promise.all(this.state.order.map(pawn => pawn.isDead()));
@@ -116,6 +128,8 @@ export default class TurnManager {
     }
 
     checkGameFinished() {
+        if (this.state.currentState === 'halt')
+            return;
         if (this.state.order.length === 0) return true;
         let firstOwner = this.state.order[0].owner;
         for (let pawn of this.state.order)
@@ -125,11 +139,15 @@ export default class TurnManager {
     }
 
     newRound () {
+        if (this.state.currentState === 'halt')
+            return;
         this.state.roundCount++;
         console.log("New round!");
     }
 
     endGame() {
+        if (this.state.currentState === 'halt')
+            return;
         this.menuManager.stopBattleBGM();
         if (this.state.winner === 'player')
         {
@@ -159,6 +177,7 @@ export default class TurnManager {
     }
 
     startNewGame = () => {
+        console.log("New game is started");
         this.state.currentState = 'none';
         this.state.order = null;
         this.state.currentPawn = null;
@@ -175,5 +194,10 @@ export default class TurnManager {
 
         this.calculateTurnOrder();
         this.startNextTurn();
+    }
+
+    halt = () => {
+        console.log('halt');
+        this.state.currentState = 'halt';
     }
 }

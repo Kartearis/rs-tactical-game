@@ -30,6 +30,11 @@ export default class SoundPlayer {
         else this.sounds[label] = [newAudio];
     }
 
+    clearSounds = (label) => {
+        if (this.sounds[label])
+            this.sounds[label] = [];
+    }
+
     playSound = (label) => {
         if (this.sounds[label])
             this.sounds[label].forEach(sound => sound.play());
