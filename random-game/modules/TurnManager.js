@@ -53,7 +53,7 @@ export default class TurnManager {
     startNextTurn () {
         if (this.state.currentState === 'halt')
             return;
-        console.log("Next turn started");
+        // console.log("Next turn started");
         if (!this.state.order) throw new Error("Order is not defined yet!");
         if (this.state.nextPawnIndex >= this.state.order.length)
         {
@@ -142,7 +142,7 @@ export default class TurnManager {
         if (this.state.currentState === 'halt')
             return;
         this.state.roundCount++;
-        console.log("New round!");
+        // console.log("New round!");
     }
 
     endGame() {
@@ -177,7 +177,7 @@ export default class TurnManager {
     }
 
     startNewGame = () => {
-        console.log("New game is started");
+        // console.log("New game is started");
         this.state.currentState = 'none';
         this.state.order = null;
         this.state.currentPawn = null;
@@ -197,7 +197,7 @@ export default class TurnManager {
     }
 
     halt = () => {
-        console.log('halt');
+        // console.log('halt');
         this.state.currentState = 'halt';
     }
 }
