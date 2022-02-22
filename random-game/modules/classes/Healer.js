@@ -19,6 +19,10 @@ export default class Healer extends Pawn {
         super.initializeSounds();
         this.soundPlayer.addSound('heal', "./assets/game/sounds/heal.wav");
         this.soundPlayer.clearSounds('dealDamageRanged');
+        this.soundPlayer.clearSounds('receiveDamageRanged');
+        this.soundPlayer.clearSounds('receiveDamageMelee');
+        this.soundPlayer.addSound('receiveDamageRanged', "./assets/game/sounds/female_grunt.wav", {volume: 0.6});
+        this.soundPlayer.addSound('receiveDamageMelee', "./assets/game/sounds/female_grunt.wav",{volume: 0.6});
         this.soundPlayer.addSound('dealDamageRanged', "./assets/game/sounds/fairy_ranged.wav");
     }
 

@@ -17,8 +17,8 @@ export default class Amazon extends Pawn {
         this.soundPlayer.clearSounds('receiveDamageMelee');
         this.soundPlayer.clearSounds('receiveDamageRanged');
         this.soundPlayer.clearSounds('dealDamageMelee');
-        this.soundPlayer.addSound('receiveDamageMelee', "./assets/game/sounds/female_grunt.mp3", {volume: 0.6});
-        this.soundPlayer.addSound('receiveDamageRanged', "./assets/game/sounds/female_grunt.mp3", {volume: 0.6});
+        this.soundPlayer.addSound('receiveDamageMelee', "./assets/game/sounds/female_grunt.wav", {volume: 0.6});
+        this.soundPlayer.addSound('receiveDamageRanged', "./assets/game/sounds/female_grunt.wav", {volume: 0.6});
         this.soundPlayer.addSound('dealDamageMelee', "./assets/game/sounds/Spin_attack.wav");
 
     }

@@ -12,6 +12,14 @@ export default class Spearman extends Pawn {
         this.pawnElement.classList.add("spearman");
     }
 
+    initializeSounds() {
+        super.initializeSounds();
+        this.soundPlayer.clearSounds('dealDamageRanged');
+        this.soundPlayer.clearSounds('dealDamageMelee');
+        this.soundPlayer.addSound('dealDamageRanged', "./assets/game/sounds/spear_stab.wav");
+        this.soundPlayer.addSound('dealDamageMelee', "./assets/game/sounds/spear_rod.wav", {volume: 0.8});
+    }
+
     // constructor(pawnElement, currentCell, owner) {
     //     super(pawnElement, currentCell, owner);
     // }
