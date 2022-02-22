@@ -159,10 +159,20 @@ export default class Pawn {
 
     showActive = () => {
         this.pawnElement.classList.add('active');
+        this.turnStart();
     }
 
     hideActive = () => {
         this.pawnElement.classList.remove('active');
+        this.turnEnd();
+    }
+
+    turnStart() {
+
+    }
+
+    turnEnd() {
+
     }
 
     // Move pawn along route of cells
@@ -171,7 +181,7 @@ export default class Pawn {
     }
 
     async moveStep (path, index) {
-        this.soundPlayer.playSound('step');
+        this.soundPlayer.promisedPlaySound('step');
         this.moveToCell(path[index]);
         if (path.length > index + 1)
             return await promiseSetTimeout(() => this.moveStep(path, index + 1), this.animation.stepDelay);
@@ -199,9 +209,11 @@ export default class Pawn {
             || Math.abs(pawn.currentCell.posY - this.currentCell.posY) > 1)
             type = 'ranged';
         // Start animation if any
+        // Some though is required to awaiting. Sounds are usually longer than required, maybe make promise resolve at specified
+        // audio.currentTime?
         if (type === 'melee')
-            await this.soundPlayer.playSound('dealDamageMelee');
-        else await this.soundPlayer.playSound('dealDamageRanged');
+            this.soundPlayer.playSound('dealDamageMelee');
+        else this.soundPlayer.playSound('dealDamageRanged');
         // Deal damage
         this.dealDamage(pawn, type);
     }

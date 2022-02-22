@@ -26,8 +26,8 @@ export default class Healer extends Pawn {
         if (pawn.owner !== this.owner)
             await super.attack(pawn);
         else {
-            await this.soundPlayer.promisedPlaySound('heal');
             pawn.stats.hp += this.stats.heal;
+            await this.soundPlayer.promisedPlaySound('heal');
         }
     }
 

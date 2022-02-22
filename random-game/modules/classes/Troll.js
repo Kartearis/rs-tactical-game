@@ -12,6 +12,25 @@ export default class Troll extends Pawn {
         this.pawnElement.classList.add("troll");
     }
 
+    initializeSounds() {
+        super.initializeSounds();
+        this.soundPlayer.addSound("regenerate", "./assets/game/sounds/regenerate.wav");
+        this.soundPlayer.clearSounds('dealDamageMelee');
+        this.soundPlayer.clearSounds('receiveDamageMelee');
+        this.soundPlayer.clearSounds('receiveDamageRanged');
+        this.soundPlayer.clearSounds('blockDamage');
+        this.soundPlayer.addSound("receiveDamageMelee", "./assets/game/sounds/TrollGrunt.wav", {volume: 0.6});
+        this.soundPlayer.addSound("receiveDamageRanged", "./assets/game/sounds/TrollGrunt.wav", {volume: 0.6});
+        this.soundPlayer.addSound("dealDamageMelee", "./assets/game/sounds/heavy_impact.wav");
+        this.soundPlayer.addSound("blockDamage", "./assets/game/sounds/troll_blocked.wav");
+    }
+
+    turnStart() {
+        super.turnStart();
+        this.soundPlayer.playSound('regenerate');
+        this.stats.hp += this.stats.regen;
+    }
+
     // constructor(pawnElement, currentCell, owner) {
     //     super(pawnElement, currentCell, owner);
     // }

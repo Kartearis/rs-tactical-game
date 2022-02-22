@@ -56,6 +56,7 @@ const scenarios = [
             {class: Pirate, pos: [1, 3], owner: 'player'},
             {class: Pirate, pos: [1, 4], owner: 'player'},
             {class: Pirate, pos: [1, 5], owner: 'player'},
+            {class: Pirate, pos: [1, 6], owner: 'player'},
             {class: Goblin, pos: [4, 0], owner: 'ai'},
             {class: Goblin, pos: [4, 1], owner: 'ai'},
             {class: Goblin, pos: [4, 2], owner: 'ai'},
